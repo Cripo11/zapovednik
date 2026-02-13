@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ЗАПОВЕДНИК | DayZ Server</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Syncopate:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Background Effects -->
+    <div class="bg-noise"></div>
+    <div class="bg-fog"></div>
+
+    <div class="container">
+        <header class="header">
+            <h1 class="glitch" data-text="ЗАПОВЕДНИК">ЗАПОВЕДНИК</h1>
+            <p class="subtitle">PVE • Полу-хардкор • Вечная ночь приближается</p>
+        </header>
+
+        <main class="main-content">
+            <h2 class="timer-label">До запуска Tier 4 осталось</h2>
+            
+            <div id="countdown" class="countdown">
+                <div class="time-card">
+                    <span id="days">00</span>
+                    <span class="label">Дни</span>
+                </div>
+                <div class="time-card">
+                    <span id="hours">00</span>
+                    <span class="label">Часы</span>
+                </div>
+                <div class="time-card">
+                    <span id="minutes">00</span>
+                    <span class="label">Мин</span>
+                </div>
+                <div class="time-card">
+                    <span id="seconds">00</span>
+                    <span class="label">Сек</span>
+                </div>
+            </div>
+
+            <div id="launch-message" class="hidden">
+                <h2 class="glitch-simple">Tier 4 открыт</h2>
+            </div>
+
+            <div class="copy-container">
+                <button id="copy-date-btn" class="copy-btn" title="Copy launch date">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    <span>Copy launch date</span>
+                </button>
+            </div>
+
+            <p class="mystery-text">Когда лес заговорит светом — <br>ты поймёшь, что опоздал.</p>
+
+            <div class="teasers">
+                <div class="chip">Адамантит</div>
+                <div class="chip">Алтари</div>
+                <div class="chip">Светящиеся деревья</div>
+                <div class="chip">Вечная ночь</div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <a href="#" class="icon-btn" title="Discord">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.772-.6083 1.1588a18.4245 18.4245 0 00-5.4608 0 16.3235 16.3235 0 00-.6163-1.1588.0776.0776 0 00-.0784-.0371 19.7363 19.7363 0 00-4.8852 1.5151.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561 20.03 20.03 0 005.9937 3.0337.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057 13.111 13.111 0 01-1.872-8914.0766.0766 0 01.007-.1278c.15.2285 242.064.242.075.075 0 011.872.8914.0766.0766 0 01.0416.1057c-.3529.699-.7644 1.3638-1.226 1.9942a.077.077 0 00.0842.0276 20.03 20.03 0 005.9937-3.0337.0824.0824 0 00.0312-.0561c.4518-4.8529-.5335-9.4586-3.7919-14.1205a.0707.0707 0 00-.0322-.0277zM8.52 14.9131c-1.1575 0-2.1167-1.0638-2.1167-2.3787 0-1.3149.9328-2.3787 2.1167-2.3787 1.1717 0 2.1264 1.0776 2.1167 2.3787-.01 1.301-.945 2.3787-2.1167 2.3787zm6.96 0c-1.1575 0-2.1167-1.0638-2.1167-2.3787 0-1.3149.9328-2.3787 2.1167-2.3787 1.1717 0 2.1264 1.0776 2.1167 2.3787-.01 1.301-.945 2.3787-2.1167 2.3787z"/>
+                </svg>
+                <span>Discord</span>
+            </a>
+            <a href="#" class="icon-btn" title="Rules">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+                <span>Rules</span>
+            </a>
+        </footer>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
