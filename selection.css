@@ -71,7 +71,7 @@ body {
     font-size: 0.8rem;
     color: var(--text-dim);
     letter-spacing: 0.2em;
-    margin-bottom: 1rem;
+    margin: 1rem;
     text-transform: uppercase;
 }
 
