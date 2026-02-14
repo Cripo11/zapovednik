@@ -18,20 +18,18 @@ const ICONS = {
 // Fixed Data (12 Cards)
 // Genes: A=Alpha, B=Beta, D=Delta, E=Epsilon, C=Gamma, X=Corruption
 const PLANTS = [
-    { id: 'm1', name: 'Сраноклевер', genes: ['A', 'D'], icon: ICONS.clover },
-    { id: 'm2', name: 'Хренодендрон', genes: ['A', 'B'], icon: ICONS.tree },
-    { id: 'm3', name: 'Ёпрстник', genes: ['B', 'D'], icon: ICONS.grass },
-    { id: 'm4', name: 'Егерьлист', genes: ['A', 'E'], icon: ICONS.leaf },
-
     { id: 'm5', name: 'Похерник', genes: ['A', 'D', 'X'], icon: ICONS.mushroom },
+    { id: 'm1', name: 'Сраноклевер', genes: ['A', 'D'], icon: ICONS.clover },
     { id: 'm6', name: 'Чепушник', genes: ['E', 'C'], icon: ICONS.sprout },
+    { id: 'm2', name: 'Хренодендрон', genes: ['A', 'B'], icon: ICONS.tree },
     { id: 'm7', name: 'Сраномох', genes: ['B', 'D', 'E'], icon: ICONS.moss },
     { id: 'm8', name: 'Дурноплющ', genes: ['A', 'A', 'E'], icon: ICONS.vine },
-
+    { id: 'm3', name: 'Ёпрстник', genes: ['B', 'D'], icon: ICONS.grass },
     { id: 'm9', name: 'Срамоцвет', genes: ['A', 'D', 'E'], icon: ICONS.flower },
     { id: 'm10', name: 'Глюкомор', genes: ['B', 'B', 'E'], icon: ICONS.dna },
+    { id: 'm4', name: 'Егерьлист', genes: ['A', 'E'], icon: ICONS.leaf },
     { id: 'm11', name: 'Понтороз', genes: ['A', 'A', 'C'], icon: ICONS.seed },
-    { id: 'm12', name: 'Блядокуст', genes: ['A', 'E', 'X'], icon: ICONS.root } // X included!
+    { id: 'm12', name: 'Блядокуст', genes: ['A', 'E', 'X'], icon: ICONS.root }
 ];
 
 let selectedIngs = [];
