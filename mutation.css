@@ -22,6 +22,45 @@
     box-shadow: 0 0 8px rgba(255, 136, 255, 0.3);
 }
 
+.indicator-D {
+    border-color: #4488ff;
+    color: #4488ff;
+    background: rgba(68, 136, 255, 0.1);
+    box-shadow: 0 0 8px rgba(68, 136, 255, 0.3);
+}
+
+.indicator-E {
+    border-color: #ffcc00;
+    color: #ffcc00;
+    background: rgba(255, 204, 0, 0.1);
+    box-shadow: 0 0 8px rgba(255, 204, 0, 0.3);
+}
+
+.indicator-X {
+    border-color: #ff0000;
+    color: #ff0000;
+    background: rgba(255, 0, 0, 0.2);
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+    animation: pulseRed 1s infinite;
+}
+
+@keyframes pulseRed {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
 /* Gene Dots in Card */
 .genes-display {
     display: flex;
@@ -56,6 +95,22 @@
 .gene-dot.C {
     background: #ff88ff;
     box-shadow: 0 0 5px #ff88ff;
+}
+
+.gene-dot.D {
+    background: #4488ff;
+    box-shadow: 0 0 5px #4488ff;
+}
+
+.gene-dot.E {
+    background: #ffcc00;
+    box-shadow: 0 0 5px #ffcc00;
+}
+
+.gene-dot.X {
+    background: #ff0000;
+    box-shadow: 0 0 5px #ff0000;
+    color: #fff;
 }
 
 /* Override Alchemy specific text if needed */

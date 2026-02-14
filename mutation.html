@@ -85,13 +85,19 @@
                         <div class="riddle-box technical">
                             <p>Целевые параметры:</p>
                             <ul class="rules-list">
-                                <li>4 компонента.</li>
-                                <li>Ген <b>A</b> (Альфа): Максимум.</li>
-                                <li>Ген <b>B</b> (Бета): Баланс.</li>
-                                <li>Ген <b>C</b> (Гамма): Минимум.</li>
+                                <li><b>Альфа</b>: выраженная (3).</li>
+                                <li><b>Бета</b>: двойная опора (2).</li>
+                                <li><b>Дельта</b>: каркас (2).</li>
+                                <li><b>Эпсилон</b>: фиксация (1).</li>
                             </ul>
-                            <p style="margin-top:10px; color:var(--accent-cyan)">
-                                Задача: Подобрать комбинацию с нужным профилем.
+                            <hr style="border-color:rgba(255,255,255,0.1); margin:10px 0;">
+                            <p>Допуски:</p>
+                            <ul class="rules-list">
+                                <li><b>Гамма</b>: не более 1.</li>
+                                <li><b>Порча</b>: ЗАПРЕЩЕНА.</li>
+                            </ul>
+                            <p style="margin-top:10px; color:var(--accent-green)">
+                                Цель: Собрать стабилизированный профиль.
                             </p>
                         </div>
                         <hr>
@@ -105,9 +111,9 @@
     <div id="success-overlay" class="success-overlay hidden">
         <div class="success-content">
             <h2>МУТАЦИЯ СТАБИЛЬНА</h2>
-            <p>СИНТЕЗ ЗАВЕРШЕН</p>
+            <p>ПРОФИЛЬ ПОДТВЕРЖДЕН</p>
             <div class="key-display">КЛЮЧ: <span class="key-code">ROOT-03-BETA</span></div>
-            <button onclick="window.location.href='alchemy.html'" class="return-btn">ПЕРЕЙТИ К ПРОТОКОЛУ #03</button>
+            <button onclick="window.location.href='alchemy.html'" class="return-btn">ПЕРЕЙТИ К СЛЕДУЮЩЕМУ ЭТАПУ</button>
         </div>
     </div>
 
