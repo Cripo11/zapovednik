@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZAPOVEDNIK // SELECTION</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Syncopate:wght@700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="selection.css">
+</head>
+
+<body>
+    <!-- Background Effects -->
+    <div class="bg-noise"></div>
+    <div class="bg-fog"></div>
+
+    <div class="quest-wrapper">
+        <header class="quest-header">
+            <h1>БИО-ЛАБОРАТОРИЯ: СЕКЦИЯ ОТБОРА</h1>
+            <div class="status-indicator">СТАДИЯ: 01</div>
+        </header>
+
+        <main class="quest-layout">
+            <!-- Left: Plant Grid -->
+            <section class="plant-section">
+                <div class="section-title">ДОСТУПНЫЕ ОБРАЗЦЫ</div>
+                <div class="plant-grid" id="plant-grid">
+                    <!-- Plants injected via JS -->
+                </div>
+            </section>
+
+            <!-- Center: Workbench -->
+            <section class="workbench-section">
+                <div class="workbench">
+                    <div class="section-title">СЛОТЫ СЕЛЕКЦИИ (0/4)</div>
+                    <div class="slots-container" id="slots-container">
+                        <!-- Slots injected via JS -->
+                    </div>
+                </div>
+
+                <button id="check-btn" class="check-btn" disabled>
+                    <span class="btn-text">ПРОВЕРИТЬ СЕЛЕКЦИЮ</span>
+                    <span class="btn-shine"></span>
+                </button>
+
+                <div id="message-area" class="message-area"></div>
+            </section>
+
+            <!-- Right: Note -->
+            <section class="note-section">
+                <div class="note">
+                    <div class="note-content">
+                        <p><strong>ПРОТОКОЛ ОТБОРА #01</strong></p>
+                        <hr>
+                        <div class="riddle-box">
+                            <p><span class="highlight-char neon-pulse">С</span>табильность подтверждена.</p>
+                            <p><span class="highlight-char neon-pulse">Х</span>ранение разрешено.</p>
+                            <p><span class="highlight-char neon-pulse">Ё</span>мкость достаточна.</p>
+                            <p><span class="highlight-char neon-pulse">П</span>орог пройден.</p>
+                        </div>
+                        <hr>
+                        <p class="note-footer">
+                            <em>-- д-р Ricco.</em>
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Success Overlay -->
+    <div id="success-overlay" class="success-overlay hidden">
+        <div class="success-content">
+            <h2>СЕЛЕКЦИЯ УСПЕШНА</h2>
+            <p>ДОСТУП РАЗРЕШЕН</p>
+            <button onclick="window.location.href='mutation.html'" class="return-btn">Перейти к следующему
+                этапу</button>
+        </div>
+    </div>
+
+    <script src="selection.js"></script>
+</body>
+
+</html>

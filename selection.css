@@ -1,0 +1,468 @@
+:root {
+    --card-bg: rgba(20, 20, 25, 0.6);
+    --card-border: rgba(255, 255, 255, 0.05);
+    --slot-bg: rgba(0, 0, 0, 0.5);
+    --slot-empty: rgba(255, 255, 255, 0.03);
+    --accent-cyan: #00f3ff;
+    --accent-green: #ccff00;
+    --accent-red: #ff3333;
+    --text-main: #e0e0e0;
+    --text-dim: #888;
+}
+
+body {
+    overflow: hidden;
+    /* Prevent scrolling usually */
+    background-color: #05060a;
+}
+
+.quest-wrapper {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* Header */
+.quest-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 1rem;
+}
+
+.quest-header h1 {
+    font-family: 'Syncopate', sans-serif;
+    font-size: 1.5rem;
+    color: var(--text-main);
+    letter-spacing: 0.1em;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.status-indicator {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    color: var(--accent-cyan);
+    background: rgba(0, 243, 255, 0.1);
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    letter-spacing: 0.1em;
+    border: 1px solid rgba(0, 243, 255, 0.3);
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.1);
+}
+
+/* Layout */
+.quest-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 0.8fr;
+    gap: 2rem;
+    flex: 1;
+    min-height: 0;
+    /* Fix grid overflow */
+}
+
+.section-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    letter-spacing: 0.2em;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+}
+
+/* Plant Grid */
+.plant-section {
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
+    height: 100%;
+    width: 97%;
+}
+
+.plant-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 0.8rem;
+    flex: 1;
+}
+
+/* Plant Icons */
+.plant-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    backdrop-filter: blur(5px);
+    gap: 0.5rem;
+}
+
+.plant-card span {
+    font-size: 0.75rem;
+    color: var(--text-main);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    pointer-events: none;
+}
+
+.plant-card:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(40, 40, 50, 0.7);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.plant-card.selected {
+    opacity: 0.2;
+    pointer-events: none;
+    transform: scale(0.95);
+    border-color: transparent;
+}
+
+.card-icon {
+    width: 40px;
+    height: 40px;
+    fill: var(--text-dim);
+    transition: all 0.3s;
+}
+
+.plant-card:hover .card-icon {
+    fill: var(--accent-cyan);
+    filter: drop-shadow(0 0 5px var(--accent-cyan));
+}
+
+.plant-card.selected .card-icon {
+    opacity: 0.5;
+}
+
+/* Workbench */
+.workbench-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+    margin-top: 2rem;
+}
+
+.workbench {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8);
+}
+
+.slots-container {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.slot {
+    width: 100px;
+    height: 120px;
+    background: var(--slot-bg);
+    border: 1px dashed var(--slot-empty);
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s;
+    position: relative;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.slot.filled {
+    border-style: solid;
+    border-color: var(--accent-cyan);
+    background: rgba(0, 243, 255, 0.05);
+    box-shadow: 0 0 15px rgba(0, 243, 255, 0.1), inset 0 0 10px rgba(0, 243, 255, 0.05);
+    cursor: pointer;
+    flex-direction: column;
+    /* Stack icon and text */
+    gap: 5px;
+}
+
+.slot.filled span {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    color: #fff;
+    text-align: center;
+    line-height: 1.2;
+    padding: 0;
+    text-shadow: 0 0 5px rgba(0, 243, 255, 0.5);
+}
+
+.slot.filled svg {
+    width: 32px;
+    height: 32px;
+    fill: var(--accent-cyan);
+    filter: drop-shadow(0 0 5px var(--accent-cyan));
+}
+
+.slot.filled:hover {
+    background: rgba(255, 51, 51, 0.1);
+    /* Red hint to remove */
+    border-color: var(--accent-red);
+}
+
+/* Error State */
+.slot.error {
+    animation: shake 0.4s ease-in-out;
+    border-color: var(--accent-red);
+    background: rgba(255, 51, 51, 0.1);
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    75% {
+        transform: translateX(5px);
+    }
+}
+
+/* Check Button */
+.check-btn {
+    position: relative;
+    background: transparent;
+    border: 1px solid var(--card-border);
+    color: var(--text-dim);
+    padding: 1rem 3rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: not-allowed;
+    overflow: hidden;
+    transition: all 0.3s;
+    border-radius: 4px;
+}
+
+.check-btn:not(:disabled) {
+    border-color: var(--accent-cyan);
+    color: var(--accent-cyan);
+    cursor: pointer;
+    background: rgba(0, 243, 255, 0.05);
+    box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);
+}
+
+.check-btn:not(:disabled):hover {
+    background: var(--accent-cyan);
+    color: #000;
+    box-shadow: 0 0 30px rgba(0, 243, 255, 0.4);
+    transform: translateY(-2px);
+}
+
+.message-area {
+    height: 1.5rem;
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.message-area.visible {
+    opacity: 1;
+}
+
+.message-area.error {
+    color: var(--accent-red);
+    text-shadow: 0 0 10px rgba(255, 51, 51, 0.3);
+}
+
+.message-area.success {
+    color: var(--accent-green);
+    text-shadow: 0 0 10px rgba(204, 255, 0, 0.3);
+}
+
+
+/* Note Section */
+.note-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.note {
+    background: #1a1b20;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    /* Dark paper style */
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transform: rotate(2deg);
+    max-width: 300px;
+    position: relative;
+}
+
+.note::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.1'/%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.note-content {
+    font-family: 'Inter', sans-serif;
+    /* Clean font requested */
+    color: #d0d0d0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.note-content hr {
+    border: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 1rem 0;
+}
+
+.riddle-text {
+    font-style: italic;
+    color: #fff;
+    margin: 1.5rem 0;
+}
+
+.highlight-char {
+    /* User request: subtle highlight */
+    color: #eaeaea;
+    /* Actually prompt said "С Х Ё С П" is the key. 
+       Maybe bold or slightly brighter? 
+       Prompt said "Визуально: ... чуть выделены ... но не палевно"
+    */
+    font-weight: 600;
+    text-shadow: 0 0 2px rgba(255, 255, 255, 0.3);
+}
+
+.note-footer {
+    font-size: 0.7rem;
+    color: #777;
+    margin-top: 2rem;
+}
+
+/* Success Overlay */
+.success-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(20px);
+    transition: opacity 1s, visibility 1s;
+}
+
+.success-overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.success-content {
+    text-align: center;
+    animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.success-content h2 {
+    font-family: 'Syncopate', sans-serif;
+    color: var(--accent-green);
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 20px rgba(204, 255, 0, 0.3);
+}
+
+.key-display {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.5rem;
+    color: #fff;
+    border: 1px solid var(--accent-green);
+    padding: 1rem 2rem;
+    margin: 2rem auto;
+    display: inline-block;
+    background: rgba(204, 255, 0, 0.1);
+    letter-spacing: 0.2em;
+    box-shadow: 0 0 30px rgba(204, 255, 0, 0.2);
+}
+
+.return-btn {
+    margin-top: 2rem;
+    background: transparent;
+    border: 1px solid #fff;
+    color: #fff;
+    padding: 0.8rem 2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.return-btn:hover {
+    background: #fff;
+    color: #000;
+}
+
+@media (max-width: 900px) {
+    .quest-layout {
+        grid-template-columns: 1fr;
+        overflow-y: auto;
+    }
+
+    .quest-wrapper {
+        height: auto;
+        overflow-y: auto;
+    }
+
+    .plant-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}

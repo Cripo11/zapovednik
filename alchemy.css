@@ -1,0 +1,277 @@
+/* Cauldron & Temp Bar */
+
+.cauldron-container {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.cauldron-svg {
+    width: 180px;
+
+    height: 180px;
+    filter: drop-shadow(0 0 10px rgba(0, 243, 255, 0.2));
+}
+
+.cauldron-body {
+    stroke: var(--accent-cyan);
+    fill: rgba(0, 243, 255, 0.05);
+}
+
+.temp-display {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Syncopate', sans-serif;
+    font-size: 1.2rem;
+    /* Smaller */
+    color: #fff;
+    text-shadow: 0 0 10px var(--accent-cyan);
+}
+
+.temp-bar-container {
+    position: absolute;
+    right: -25px;
+    width: 8px;
+    /* Thinner */
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.temp-bar {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: linear-gradient(to top, var(--accent-cyan), var(--term-violet), var(--term-red));
+    transition: height 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.temp-limit-line {
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background: var(--term-red);
+    box-shadow: 0 0 5px var(--term-red);
+}
+
+.cauldron-glow {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(0, 243, 255, 0.2) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+/* Inherits from selection.css */
+
+body {
+    overflow-y: auto !important;
+    /* Allow scroll */
+    height: auto;
+}
+
+.quest-wrapper {
+    height: auto;
+    min-height: 100vh;
+    overflow-y: visible;
+    padding-bottom: 4rem;
+    /* Space at bottom */
+}
+
+/* Bubbles Animation */
+.bubble {
+    fill: var(--accent-cyan);
+    opacity: 0.6;
+    animation: rise 2s infinite ease-in;
+}
+
+@keyframes rise {
+    0% {
+        transform: translateY(0);
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: translateY(-40px);
+        opacity: 0;
+    }
+}
+
+/* Ingredient modifiers */
+.plant-card {
+    padding: 1.3rem 0.4rem 0.4rem;
+    gap: 0.1rem;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-icon {
+    width: 36px;
+    height: 36px;
+
+}
+
+.plant-card h4,
+.plant-card span {
+    margin: 0;
+    font-size: 12px;
+    color: #eee;
+    white-space: nowrap;
+    /* Prevent wrap */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+.plant-card .stats {
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.2;
+    margin-top: 3px;
+}
+
+.plant-grid.compact {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.8rem;
+    width: 100%;
+    height: 100%;
+}
+
+/* Slots for 5 items */
+.slots-container {
+    flex-wrap: nowrap !important;
+    /* Force single row */
+    gap: 0.6rem !important;
+    /* Slightly larger gap */
+    justify-content: center;
+    width: 100%;
+    margin: 1rem 0 1.5rem 0;
+    /* Top 1rem, Bottom 1.5rem */
+}
+
+.slot {
+    width: 78px !important;
+    /* 65 * 1.2 */
+    height: 78px !important;
+    min-width: 78px;
+    border-radius: 8px;
+    /* Slightly larger radius */
+}
+
+.slot svg {
+    width: 34px;
+    height: 34px;
+}
+
+/* Sequence Indicators */
+.sequence-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    /* Tighter gap */
+    margin-bottom: 1.5rem;
+    /* Matched margin */
+    min-height: 30px;
+}
+
+.indicator-badge {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* K - Catalyst (Red/Orange) */
+.indicator-K {
+    border-color: #ff5555;
+    color: #ff5555;
+    background: rgba(255, 85, 85, 0.1);
+    box-shadow: 0 0 8px rgba(255, 85, 85, 0.3);
+}
+
+/* E - Energy (Yellow/Electric) */
+.indicator-E {
+    border-color: #ffff55;
+    color: #ffff55;
+    background: rgba(255, 255, 85, 0.1);
+    box-shadow: 0 0 8px rgba(255, 255, 85, 0.3);
+}
+
+/* S - Stabilizer (Cyan) */
+.indicator-S {
+    border-color: #55ffff;
+    color: #55ffff;
+    background: rgba(85, 255, 255, 0.1);
+    box-shadow: 0 0 8px rgba(85, 255, 255, 0.3);
+}
+
+@keyframes popIn {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.slot span {
+    font-size: 0.5rem;
+    display: none;
+    /* Hide text in slots to save space if needed, or make very small */
+}
+
+/* Three col layout adjustment */
+.quest-layout.three-col {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5%;
+    align-items: start;
+}
+
+.workbench {
+    padding: 0.5rem;
+}
+
+.note {
+    padding: 1rem;
+}
+
+@media (max-width: 900px) {
+    .quest-layout.three-col {
+        grid-template-columns: 1fr;
+    }
+}
+
+.check-btn {
+    margin-top: 0 !important;
+    /* Remove top margin to equal spacing */
+}
