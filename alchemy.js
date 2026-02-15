@@ -56,7 +56,12 @@ const PHASES = {
     MURKY: { id: 'MURKY', label: 'МУТЬ (ПРОВАЛ)' }
 };
 
+// ==========================================
+// PROTOCOL DEFINITION (STRICT)
+// ==========================================
+
 const PROTOCOL = {
+    id: "protocol03",
     title: 'ПРОТОКОЛ #03: СТАБИЛЬНЫЙ ЭКСТРАКТ',
     requirements: [
         'Инициация: превратить Чистый раствор в Активную смесь.',
@@ -64,8 +69,67 @@ const PROTOCOL = {
         'Финализация: на 5-м шаге строго Стабилизатор.',
         'Запрет: избегать Мути (не смывать Осадок, не перегревать Пену).'
     ],
-    targetStep4: PHASES.SEDIMENT.id,
-    requiredTypeStep5: TYPES.STABILIZER.id
+    // Precise steps for the ONLY valid solution
+    steps: [
+        {
+            step: 1,
+            expectPrimary: TYPES.ACTIVATOR.id,
+            expectSecondary: "Накопительный",
+            phaseAfter: PHASES.ACTIVE,
+            setFlags: { activated: true },
+            successLogs: [
+                "Раствор принял реагент. Идёт накопление потенциала…",
+                "Статус: АКТИВНАЯ СМЕСЬ (латентная)."
+            ]
+        },
+        {
+            step: 2,
+            expectPrimary: TYPES.CATALYST.id,
+            expectSecondary: "Резонансный",
+            phaseAfter: PHASES.FOAM,
+            setFlags: { resonated: true },
+            requiresFlags: ["activated"],
+            successLogs: [
+                "Резонанс пойман. Пена поднимается ровно.",
+                "Статус: ПЕНА (неочищенная)."
+            ]
+        },
+        {
+            step: 3,
+            expectPrimary: TYPES.SOLVENT.id,
+            expectSecondary: "Очищающий",
+            phaseAfter: PHASES.FOAM,
+            setFlags: { purified: true },
+            requiresFlags: ["resonated"],
+            successLogs: [
+                "Сброс поверхностной грязи. Пена стала “чистой”.",
+                "Статус: ПЕНА (очищенная)."
+            ]
+        },
+        {
+            step: 4,
+            expectPrimary: TYPES.COAGULANT.id,
+            expectSecondary: "Глубинный",
+            phaseAfter: PHASES.SEDIMENT,
+            setFlags: { sedimented: true },
+            requiresFlags: ["purified"],
+            successLogs: [
+                "Коагуляция прошла ровно. Осадок плотный.",
+                "Статус: ОСАДОК (плотный)."
+            ]
+        },
+        {
+            step: 5,
+            expectPrimary: TYPES.STABILIZER.id,
+            expectSecondary: "Закрепляющий",
+            phaseAfter: PHASES.SEDIMENT,
+            setFlags: { sealed: true },
+            requiresFlags: ["sedimented"],
+            successLogs: [
+                "Фиксация прошла. Осадок “запечатан”."
+            ]
+        }
+    ]
 };
 
 // ==========================================
@@ -73,8 +137,19 @@ const PROTOCOL = {
 // ==========================================
 
 let sequence = [null, null, null, null, null];
-let isRunning = false;
-let currentPhase = PHASES.CLEAR;
+
+let reaction = {
+    isRunning: false,
+    stepIndex: 0,
+    phase: PHASES.CLEAR,
+    flags: {
+        activated: false,
+        resonated: false,
+        purified: false,
+        sedimented: false,
+        sealed: false
+    }
+};
 
 // ==========================================
 // DOM ELEMENTS
@@ -97,7 +172,7 @@ function init() {
     renderIngredientGrid();
     renderSequenceStrip();
     renderProtocol();
-    resetCauldron();
+    resetReactionState();
 
     btnRun.onclick = startReaction;
     btnClear.onclick = clearAll;
@@ -170,8 +245,6 @@ function renderProtocol() {
     body.innerHTML = `<ul class="protocol-list">
         ${PROTOCOL.requirements.map(req => `<li>${req}</li>`).join('')}
     </ul>`;
-
-    // Removed hints rendering
 }
 
 // ==========================================
@@ -179,7 +252,7 @@ function renderProtocol() {
 // ==========================================
 
 function addToSequence(ing) {
-    if (isRunning) return;
+    if (reaction.isRunning) return;
 
     const emptyIndex = sequence.indexOf(null);
     if (emptyIndex !== -1) {
@@ -190,33 +263,42 @@ function addToSequence(ing) {
 }
 
 function removeFromSequence(index) {
-    if (isRunning) return;
+    if (reaction.isRunning) return;
     sequence[index] = null;
     renderSequenceStrip();
     updateControls();
 }
 
 function clearAll() {
-    if (isRunning) return;
+    if (reaction.isRunning) return;
     sequence = [null, null, null, null, null];
     renderSequenceStrip();
     updateControls();
-    resetCauldron();
+    resetReactionState();
     logContent.innerHTML = '';
 }
 
 function updateControls() {
     const isFull = sequence.every(s => s !== null);
-    btnRun.disabled = !isFull || isRunning;
-    btnClear.disabled = isRunning;
+    btnRun.disabled = !isFull || reaction.isRunning;
+    btnClear.disabled = reaction.isRunning;
 }
 
 // ==========================================
-// REACTION LOGIC
+// REACTION LOGIC (STRICT)
 // ==========================================
 
-function resetCauldron() {
-    currentPhase = PHASES.CLEAR;
+function resetReactionState() {
+    reaction.isRunning = false;
+    reaction.stepIndex = 0;
+    reaction.phase = PHASES.CLEAR;
+    reaction.flags = {
+        activated: false,
+        resonated: false,
+        purified: false,
+        sedimented: false,
+        sealed: false
+    };
     updateCauldronVisual(PHASES.CLEAR);
 }
 
@@ -234,112 +316,109 @@ function log(text, type = 'step') {
 }
 
 async function startReaction() {
-    if (isRunning) return;
-    isRunning = true;
+    if (reaction.isRunning) return;
+
+    // B) Preparation
+    reaction.isRunning = true;
     updateControls();
+    resetReactionState();
+    reaction.isRunning = true; // Ensure running after reset
 
-    resetCauldron();
     logContent.innerHTML = '';
-    log("=== ЗАПУСК РЕАКЦИИ ===", "step");
+    log("▶ Инициализация реактора… Статус: ЧИСТЫЙ РАСТВОР.", "step");
+    log("▶ Протокол #03 загружен. Режим: СТАБИЛЬНЫЙ ЭКСТРАКТ.", "step");
 
+    // C) Simulation
     for (let i = 0; i < 5; i++) {
+        reaction.stepIndex = i + 1; // 1-based logic
         const slotEl = document.getElementById(`slot-${i}`);
         slotEl.classList.add('active-process');
 
         const ing = sequence[i];
+        const rule = PROTOCOL.steps[i];
 
         await new Promise(r => setTimeout(r, 600));
 
-        log(`Шаг ${i + 1}: Добавлен ${ing.name} (${ing.type.label})`, "step");
-
-        // Use safe defaults if type not found in logic
-        const nextPhase = calculateTransition(currentPhase, ing.type);
-
-        if (nextPhase === PHASES.MURKY) {
-            log(`СБОЙ: ${getFailReason(currentPhase, ing.type)}`, "error");
-            updateCauldronVisual(PHASES.MURKY);
-            currentPhase = PHASES.MURKY;
-            failReaction(slotEl);
-            return;
-        } else {
-            if (nextPhase !== currentPhase) {
-                log(`>> Реакция: Смесь перешла в фазу ${nextPhase.label}`, "process");
-            } else {
-                log(`>> Нет эффекта: Фаза осталась ${currentPhase.label}`, "process");
-            }
-            currentPhase = nextPhase;
-            updateCauldronVisual(currentPhase);
-        }
+        // Validate
+        const success = validateAndApplyStep(reaction.stepIndex, ing, rule);
 
         slotEl.classList.remove('active-process');
+
+        // Check fail
+        if (!success || reaction.phase === PHASES.MURKY) {
+            break; // Stop loop
+        }
     }
 
-    if (currentPhase === PHASES.SEDIMENT && sequence[4].type.id === TYPES.STABILIZER.id) {
-        success();
+    // D) Finalization
+    if (reaction.flags.sealed === true && reaction.phase !== PHASES.MURKY) {
+        log("✔ УСПЕХ: получен СТАБИЛЬНЫЙ ЭКСТРАКТ.", "success");
+        successOverlay.classList.remove('hidden');
     } else {
-        let reason = "Не удалось стабилизировать эликсир.";
-        if (currentPhase !== PHASES.SEDIMENT) reason = "В финале не получен Осадок.";
-        else if (sequence[4].type.id !== TYPES.STABILIZER.id) reason = "Последний компонент не является Стабилизатором.";
+        // Wait a moment so user sees the failure result
+        await new Promise(r => setTimeout(r, 1000));
 
-        log(`ПРОВАЛ: ${reason}`, "error");
-        failReaction();
-    }
-}
-
-function calculateTransition(phase, type) {
-    // Handling new types gracefully
-    if (!type) return PHASES.MURKY;
-
-    // 1. CLEAR
-    if (phase === PHASES.CLEAR) {
-        if (type.id === TYPES.ACTIVATOR.id) return PHASES.ACTIVE;
-        if (type.id === TYPES.BUFFER.id) return PHASES.CLEAR; // Buffers keep clear?
-        return PHASES.CLEAR; // Default stay clear for most? Or murky?
+        // Clear ingredients from the strip
+        sequence = [null, null, null, null, null];
+        renderSequenceStrip();
     }
 
-    // 2. ACTIVE
-    if (phase === PHASES.ACTIVE) {
-        if (type.id === TYPES.CATALYST.id) return PHASES.FOAM;
-        if (type.id === TYPES.SOLVENT.id) return PHASES.CLEAR;
-        if (type.id === TYPES.ACTIVATOR.id) return PHASES.ACTIVE;
-        if (type.id === TYPES.BUFFER.id) return PHASES.ACTIVE; // Buffers maintain active?
-        if (type.id === TYPES.MODIFIER.id) return PHASES.ACTIVE;
-        return PHASES.MURKY;
-    }
-
-    // 3. FOAM
-    if (phase === PHASES.FOAM) {
-        if (type.id === TYPES.COAGULANT.id) return PHASES.SEDIMENT;
-        if (type.id === TYPES.SOLVENT.id) return PHASES.ACTIVE;
-        if (type.id === TYPES.CATALYST.id) return PHASES.FOAM;
-        return PHASES.MURKY;
-    }
-
-    // 4. SEDIMENT
-    if (phase === PHASES.SEDIMENT) {
-        if (type.id === TYPES.STABILIZER.id) return PHASES.SEDIMENT;
-        if (type.id === TYPES.SOLVENT.id) return PHASES.MURKY;
-        return PHASES.MURKY;
-    }
-
-    return PHASES.MURKY;
-}
-
-function getFailReason(phase, type) {
-    if (phase === PHASES.CLEAR && type.id !== TYPES.ACTIVATOR.id) return "Чистый раствор требует Активатора.";
-    return "Несовместимая реакция.";
-}
-
-function failReaction(activeSlot) {
-    isRunning = false;
+    reaction.isRunning = false;
     updateControls();
-    if (activeSlot) activeSlot.classList.remove('active-process');
 }
 
-function success() {
-    isRunning = false;
-    log("СИНТЕЗ УСПЕШЕН! ПРОТОКОЛ ВЫПОЛНЕН.", "success");
-    successOverlay.classList.remove('hidden');
+/**
+ * Validates a single step against the strict protocol rule.
+ * Returns true if success, false if failure (MURKY).
+ */
+function validateAndApplyStep(stepIndex, ing, rule) {
+    // 1) Log header
+    log(`Шаг ${stepIndex}: ${ing.name.toUpperCase()} — ${ing.type.label} / ${ing.secondary.toUpperCase()}`, "step");
+
+    // 2) Check Primary Type
+    if (ing.type.id !== rule.expectPrimary) {
+        failStep();
+        log("• Реагент внесён не по фазе.", "error");
+        log("✖ ПРОВАЛ: протокол нарушен. Статус: МУТЬ.", "error");
+        return false;
+    }
+
+    // 3) Check Failure Flags (if prerequisites missing)
+    if (rule.requiresFlags) {
+        for (let flag of rule.requiresFlags) {
+            if (!reaction.flags[flag]) {
+                failStep();
+                log("• Реакция не готова к этому этапу.", "error");
+                log("✖ ПРОВАЛ: нарушена подготовка. Статус: МУТЬ.", "error");
+                return false;
+            }
+        }
+    }
+
+    // 4) Check Secondary Trait (Strict)
+    if (ing.secondary !== rule.expectSecondary) {
+        failStep();
+        log("• Профиль реагента несовместим с протоколом.", "error");
+        log("✖ ПРОВАЛ: структура сорвана. Статус: МУТЬ.", "error");
+        return false;
+    }
+
+    // 5) Success Application
+    reaction.phase = rule.phaseAfter;
+    if (rule.setFlags) {
+        Object.assign(reaction.flags, rule.setFlags);
+    }
+    updateCauldronVisual(reaction.phase);
+
+    // Logs
+    rule.successLogs.forEach(msg => log(`• ${msg}`, "process"));
+
+    return true;
+}
+
+function failStep() {
+    reaction.phase = PHASES.MURKY;
+    updateCauldronVisual(PHASES.MURKY);
 }
 
 // Run

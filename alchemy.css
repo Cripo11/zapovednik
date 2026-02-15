@@ -395,7 +395,7 @@ body {
     font-family: 'Courier New', monospace;
     font-size: 0.7rem;
     height: 270px;
-    overflow-y: auto;
+    /* overflow-y: auto; REMOVED */
     display: flex;
     flex-direction: column;
     line-height: 1.2;
@@ -412,8 +412,11 @@ body {
 #log-content {
     display: flex;
     flex-direction: column-reverse;
-    overflow: hidden;
+    overflow-y: auto;
+    /* ADDED */
     flex: 1;
+    padding-right: 5px;
+    /* Visual fix */
 }
 
 .log-entry {
