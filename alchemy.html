@@ -9,89 +9,75 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Syncopate:wght@700&display=swap"
         rel="stylesheet">
+
+    <!-- Core styles consistent with project -->
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="selection.css">
-    <link rel="stylesheet" href="mutation.css">
-    <link rel="stylesheet" href="alchemy.css">
+    <link rel="stylesheet" href="mutation.css"> <!-- Reusing mutation layout fixes if any -->
+    <link rel="stylesheet" href="alchemy.css"> <!-- New styles override -->
 </head>
 
 <body>
+    <!-- Background Effects -->
     <div class="bg-noise"></div>
     <div class="bg-fog"></div>
 
     <div class="quest-wrapper">
         <header class="quest-header">
-            <h1>БИО-ЛАБОРАТОРИЯ: СИНТЕЗ ЭЛИКСИРА</h1>
+            <h1>ХИМИЧЕСКИЙ РЕАКТОР: СИНТЕЗ ЭЛИКСИРА</h1>
             <div class="status-indicator">СТАДИЯ: 03</div>
         </header>
 
         <main class="quest-layout three-col">
-            <!-- Left: Ingredients -->
+            <!-- Left: Ingredients (Grid 4x4) -->
             <section class="plant-section">
-                <div class="section-title">ИНГРЕДИЕНТЫ</div>
-                <div class="plant-grid compact" id="ingredients-grid">
+                <div class="section-title">СКЛАД РЕАГЕНТОВ</div>
+                <div class="alchemy-grid compact" id="ingredients-grid">
                     <!-- Injected via JS -->
                 </div>
             </section>
 
-            <!-- Center: Cauldron -->
+            <!-- Center: Workbench (Cauldron + Sequence) -->
             <section class="workbench-section">
-                <div class="cauldron-container">
-                    <div class="cauldron-glow" id="cauldron-glow"></div>
-                    <div class="cauldron-icon">
-                        <!-- SVG Cauldron -->
-                        <svg viewBox="0 0 100 100" class="cauldron-svg">
-                            <path d="M10,40 Q10,90 50,90 T90,40 Q90,20 50,20 T10,40 Z" fill="none" class="cauldron-body"
-                                stroke-width="2" />
-                            <path d="M15,35 L85,35" stroke="var(--accent-cyan)" stroke-width="2" />
-                            <g id="bubbles">
-                                <!-- Bubbles injected -->
-                            </g>
-                        </svg>
-                        <div class="temp-display">
-                            <span id="temp-val">20</span>°C
-                        </div>
-                    </div>
 
-                    <div class="temp-bar-container">
-                        <div class="temp-bar" id="temp-bar" style="height: 20%"></div>
-                        <div class="temp-limit-line" style="bottom: 85%"></div>
-                    </div>
+                <!-- Visual Reactor -->
+                <div class="cauldron-visual phase-CLEAR" id="cauldron-visual">
+                    <div class="cauldron-liquid"></div>
+                    <div class="phase-label" id="phase-label">CLEAR</div>
                 </div>
 
+                <!-- Sequence Strip -->
                 <div class="workbench">
-                    <div class="section-title">ПОСЛЕДОВАТЕЛЬНОСТЬ ВАРКИ (0/4)</div>
-                    <div class="slots-container" id="slots-container">
-                        <!-- Slots -->
+                    <div class="section-title">ЛЕНТА РЕАКЦИИ (ШАГИ 1-5)</div>
+                    <div class="slots-container sequence-strip" id="sequence-strip">
+                        <!-- 5 Slots injected via JS -->
                     </div>
                 </div>
 
-                <button id="brew-btn" class="check-btn" disabled>
-                    <span class="btn-text">ЗАПУСТИТЬ РЕАКЦИЮ</span>
-                    <span class="btn-shine"></span>
-                </button>
+                <!-- Controls -->
+                <div class="workbench-controls">
+                    <button id="btn-run" class="control-btn primary" disabled>ЗАПУСТИТЬ РЕАКЦИЮ</button>
+                    <button id="btn-clear" class="control-btn">СБРОСИТЬ</button>
+                </div>
+
+                <!-- Reaction Log -->
+                <div class="reaction-log" id="reaction-log">
+                    <h3>ЖУРНАЛ ОПЕРАЦИЙ</h3>
+                    <div id="log-content">
+                        <!-- Log entries -->
+                    </div>
+                </div>
             </section>
 
-            <!-- Right: Protocol -->
+            <!-- Right: Protocol (Quest Info) -->
             <section class="note-section">
                 <div class="note">
                     <div class="note-content">
-                        <p><strong>ПРОТОКОЛ АЛХИМИИ #03</strong></p>
+                        <p id="protocol-title"><strong>ПРОТОКОЛ АЛХИМИИ #??</strong></p>
                         <hr>
-                        <div class="riddle-box technical">
-                            <p>Условия синтеза:</p>
-                            <ul class="rules-list">
-                                <li>Ровно 1 катализатор.</li>
-                                <li>Минимум 3 источника энергии.</li>
-                                <li>Температура реакции ≥ 65° (пик).</li>
-                                <li>Стабилизатор строго последним.</li>
-                                <li>Крит. температура: <b>90°</b>.</li>
-                            </ul>
-                            <p style="margin-top:10px; color:var(--accent-cyan)">
-                                Цель: Стабильный эликсир (48-52°).
-                            </p>
+                        <div id="protocol-body">
+                            <!-- Injected requirements -->
                         </div>
-                        <hr>
                     </div>
                 </div>
             </section>
@@ -101,10 +87,10 @@
     <!-- Success Overlay -->
     <div id="success-overlay" class="success-overlay hidden">
         <div class="success-content">
-            <h2>РЕАКЦИЯ СТАБИЛЬНА</h2>
-            <p>ЭЛИКСИР ПОЛУЧЕН</p>
+            <h2>СИНТЕЗ ЗАВЕРШЕН</h2>
+            <p>СТАБИЛЬНЫЙ ЭЛИКСИР ПОЛУЧЕН</p>
             <div class="key-display">КЛЮЧ: <span class="key-code">ROOT-04-GAMMA</span></div>
-            <button onclick="alert('Финал доступен...')" class="return-btn">ПЕРЕЙТИ К ПРОТОКОЛУ #04</button>
+            <button onclick="alert('Финал доступен...')" class="return-btn">ПЕРЕЙТИ К ФИНАЛУ</button>
         </div>
     </div>
 

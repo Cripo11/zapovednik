@@ -1,277 +1,471 @@
-/* Cauldron & Temp Bar */
+/* Inherit core layout/components from Selection/Mutation */
+/* This file ONLY adds specific Alchemy Puzzle components */
 
-.cauldron-container {
+/* =========================================
+   Layout Extensions
+   ========================================= */
+
+.quest-layout.three-col {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2%;
+    align-items: start;
+}
+
+.workbench-section {
+    gap: 2rem;
+}
+
+body {
+    overflow-y: auto;
+    /* Scroll ONLY if needed */
+    height: 100vh;
+    margin: 0;
+    display: block;
+    /* Override styles.css flex to fix scrolling */
+}
+
+.quest-wrapper {
+    min-height: 100vh;
+    padding-bottom: 2rem;
+    box-sizing: border-box;
+    /* Key fix: Include padding in 100vh height */
+}
+
+/* =========================================
+   INGREDIENT CARDS (Matched to Selection Page)
+   ========================================= */
+
+.alchemy-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.8rem;
+    /* Matched selection.css */
+    width: 100%;
+}
+
+.alchemy-card {
+    background: var(--card-bg);
+    /* Use variable from selection.css */
+    border: 1px solid var(--card-border);
+    border-radius: 6px;
+    /* Matched */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Centered content */
+    align-items: center;
+    text-align: center;
+    padding: 0.8rem;
+    /* Matched */
+    gap: 0.5rem;
+    /* Matched */
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     position: relative;
-    width: 180px;
-    height: 180px;
+    backdrop-filter: blur(5px);
+    height: 140px;
+    box-sizing: border-box;
+    overflow: visible;
+    /* Allowing tooltips */
+}
+
+/* Hover Effect - Exact Match */
+.alchemy-card:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(40, 40, 50, 0.7);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    z-index: 10;
+}
+
+.alchemy-card.selected {
+    opacity: 0.2;
+    pointer-events: none;
+    transform: scale(0.95);
+    border-color: transparent;
+}
+
+/* 1. Icon */
+.card-icon-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 0.2rem;
 }
 
-.cauldron-svg {
+.card-icon {
+    width: 40px;
+    /* Matched selection.css */
+    height: 40px;
+    fill: var(--text-dim);
+    /* Default Gray */
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.alchemy-card:hover .card-icon {
+    fill: var(--type-color);
+    filter: drop-shadow(0 0 5px var(--type-color));
+}
+
+/* 2. Name */
+.card-header {
+    width: 100%;
+}
+
+.card-name {
+    font-size: 0.75rem;
+    /* Matched selection.css span */
+    color: var(--text-main);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-weight: 600;
+    display: block;
+    pointer-events: none;
+}
+
+/* 3. Body: Type + Secondary */
+.card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    width: 100%;
+}
+
+/* Mimic Badge Look if desired, or keep as text but consistent */
+.card-type-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.9;
+}
+
+.card-secondary-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    width: 100%;
+}
+
+.card-secondary {
+    font-size: 0.55rem;
+    color: #888;
+    /* Dim text */
+    text-transform: uppercase;
+}
+
+/* Question Mark & Tooltip */
+.tooltip-trigger {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ccc;
+    font-size: 0.6rem;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 14px;
+    cursor: help;
+    display: inline-block;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.2s;
+}
+
+.tooltip-trigger:hover {
+    background: #fff;
+    color: #000;
+    border-color: #fff;
+}
+
+/* Popup Logic */
+.tooltip-popup {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    bottom: 140%;
+    /* Moved up slightly */
+    left: 50%;
+    transform: translateX(-50%);
     width: 180px;
-
-    height: 180px;
-    filter: drop-shadow(0 0 10px rgba(0, 243, 255, 0.2));
+    background: #111;
+    border: 1px solid #444;
+    color: #eee;
+    padding: 0.6rem;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    border-radius: 4px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.9);
+    transition: opacity 0.2s;
+    pointer-events: none;
+    z-index: 100;
+    text-align: left;
 }
 
-.cauldron-body {
-    stroke: var(--accent-cyan);
-    fill: rgba(0, 243, 255, 0.05);
+.tooltip-trigger:hover .tooltip-popup {
+    visibility: visible;
+    opacity: 1;
 }
 
-.temp-display {
+/* =========================================
+   CAULDRON VISUALS
+   ========================================= */
+
+.cauldron-visual {
+    width: 120px;
+    height: 120px;
+    position: relative;
+    margin: 0.6rem;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1), transparent 60%),
+        radial-gradient(circle at 70% 70%, rgba(0, 0, 0, 0.8), transparent 60%);
+    box-shadow:
+        inset 0 0 20px rgba(0, 0, 0, 0.8),
+        0 0 30px rgba(0, 0, 0, 0.5),
+        0 0 0 2px var(--card-border);
+    overflow: hidden;
+    transition: box-shadow 0.5s;
+}
+
+.cauldron-liquid {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 80%;
+    background: rgba(255, 255, 255, 0.05);
+    transition: all 1s ease-in-out;
+}
+
+.phase-label {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    width: 100%;
+    text-align: center;
     font-family: 'Syncopate', sans-serif;
-    font-size: 1.2rem;
-    /* Smaller */
-    color: #fff;
-    text-shadow: 0 0 10px var(--accent-cyan);
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+    pointer-events: none;
+    z-index: 10;
 }
 
-.temp-bar-container {
-    position: absolute;
-    right: -25px;
-    width: 8px;
-    /* Thinner */
-    height: 100%;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+/* Phase classes */
+.cauldron-visual.phase-CLEAR .cauldron-liquid {
+    background: linear-gradient(to top, rgba(100, 200, 255, 0.1), rgba(200, 240, 255, 0.05));
+    box-shadow: inset 0 0 20px rgba(100, 200, 255, 0.2);
 }
 
-.temp-bar {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    background: linear-gradient(to top, var(--accent-cyan), var(--term-violet), var(--term-red));
-    transition: height 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
+.cauldron-visual.phase-ACTIVE .cauldron-liquid {
+    background: linear-gradient(to top, rgba(204, 255, 0, 0.3), rgba(204, 255, 0, 0.1));
+    animation: activePulse 2s infinite ease-in-out;
 }
 
-.temp-limit-line {
-    position: absolute;
-    width: 100%;
-    height: 2px;
-    background: var(--term-red);
-    box-shadow: 0 0 5px var(--term-red);
-}
+@keyframes activePulse {
 
-.cauldron-glow {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle, rgba(0, 243, 255, 0.2) 0%, transparent 70%);
-    opacity: 0;
-    transition: opacity 0.5s;
-}
-
-/* Inherits from selection.css */
-
-body {
-    overflow-y: auto !important;
-    /* Allow scroll */
-    height: auto;
-}
-
-.quest-wrapper {
-    height: auto;
-    min-height: 100vh;
-    overflow-y: visible;
-    padding-bottom: 4rem;
-    /* Space at bottom */
-}
-
-/* Bubbles Animation */
-.bubble {
-    fill: var(--accent-cyan);
-    opacity: 0.6;
-    animation: rise 2s infinite ease-in;
-}
-
-@keyframes rise {
-    0% {
-        transform: translateY(0);
-        opacity: 0;
+    0%,
+    100% {
+        opacity: 0.8;
+        box-shadow: 0 0 10px rgba(204, 255, 0, 0.2) inset;
     }
 
     50% {
-        opacity: 0.8;
-    }
-
-    100% {
-        transform: translateY(-40px);
-        opacity: 0;
+        opacity: 1;
+        box-shadow: 0 0 30px rgba(204, 255, 0, 0.5) inset;
     }
 }
 
-/* Ingredient modifiers */
-.plant-card {
-    padding: 1.3rem 0.4rem 0.4rem;
-    gap: 0.1rem;
-    height: 100%;
-    width: 100%;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
+.cauldron-visual.phase-FOAM .cauldron-liquid {
+    background: linear-gradient(to top, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.7));
+    height: 90%;
 }
 
-.card-icon {
-    width: 36px;
-    height: 36px;
-
-}
-
-.plant-card h4,
-.plant-card span {
-    margin: 0;
-    font-size: 12px;
-    color: #eee;
-    white-space: nowrap;
-    /* Prevent wrap */
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
-}
-
-.plant-card .stats {
-    font-size: 12px;
-    color: var(--text-dim);
-    line-height: 1.2;
-    margin-top: 3px;
-}
-
-.plant-grid.compact {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0.8rem;
+.cauldron-visual.phase-FOAM::after {
+    content: '';
+    position: absolute;
+    top: 10%;
+    left: 0;
     width: 100%;
     height: 100%;
+    background-image:
+        radial-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 2px),
+        radial-gradient(rgba(255, 255, 255, 0.6) 2px, transparent 3px);
+    background-size: 10px 10px, 20px 20px;
+    background-position: 0 0, 10px 10px;
+    animation: bubbleRise 4s linear infinite;
+    opacity: 0.7;
 }
 
-/* Slots for 5 items */
-.slots-container {
-    flex-wrap: nowrap !important;
-    /* Force single row */
-    gap: 0.6rem !important;
-    /* Slightly larger gap */
-    justify-content: center;
-    width: 100%;
-    margin: 1rem 0 1.5rem 0;
-    /* Top 1rem, Bottom 1.5rem */
-}
-
-.slot {
-    width: 78px !important;
-    /* 65 * 1.2 */
-    height: 78px !important;
-    min-width: 78px;
-    border-radius: 8px;
-    /* Slightly larger radius */
-}
-
-.slot svg {
-    width: 34px;
-    height: 34px;
-}
-
-/* Sequence Indicators */
-.sequence-indicators {
-    display: flex;
-    justify-content: center;
-    gap: 5px;
-    /* Tighter gap */
-    margin-bottom: 1.5rem;
-    /* Matched margin */
-    min-height: 30px;
-}
-
-.indicator-badge {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 0.8rem;
-    font-weight: bold;
-    color: #fff;
-    background: rgba(0, 0, 0, 0.5);
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-/* K - Catalyst (Red/Orange) */
-.indicator-K {
-    border-color: #ff5555;
-    color: #ff5555;
-    background: rgba(255, 85, 85, 0.1);
-    box-shadow: 0 0 8px rgba(255, 85, 85, 0.3);
-}
-
-/* E - Energy (Yellow/Electric) */
-.indicator-E {
-    border-color: #ffff55;
-    color: #ffff55;
-    background: rgba(255, 255, 85, 0.1);
-    box-shadow: 0 0 8px rgba(255, 255, 85, 0.3);
-}
-
-/* S - Stabilizer (Cyan) */
-.indicator-S {
-    border-color: #55ffff;
-    color: #55ffff;
-    background: rgba(85, 255, 255, 0.1);
-    box-shadow: 0 0 8px rgba(85, 255, 255, 0.3);
-}
-
-@keyframes popIn {
+@keyframes bubbleRise {
     from {
-        transform: scale(0);
-        opacity: 0;
+        background-position: 0 0, 10px 10px;
     }
 
     to {
-        transform: scale(1);
-        opacity: 1;
+        background-position: 0 -100px, 10px -90px;
     }
 }
 
-.slot span {
-    font-size: 0.5rem;
-    display: none;
-    /* Hide text in slots to save space if needed, or make very small */
+.cauldron-visual.phase-SEDIMENT .cauldron-liquid {
+    background: linear-gradient(to top, #4a3b2a 40%, rgba(255, 255, 255, 0.05) 41%);
 }
 
-/* Three col layout adjustment */
-.quest-layout.three-col {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2.5%;
-    align-items: start;
+.cauldron-visual.phase-SEDIMENT {
+    box-shadow: inset 0 -20px 30px rgba(0, 0, 0, 0.9);
 }
 
-.workbench {
-    padding: 0.5rem;
+.cauldron-visual.phase-MURKY .cauldron-liquid {
+    background: #2a2a2a;
+    animation: murkyNoise 0.5s steps(5) infinite;
 }
 
-.note {
-    padding: 1rem;
+.cauldron-visual.phase-MURKY .phase-label {
+    color: var(--accent-red);
 }
 
-@media (max-width: 900px) {
-    .quest-layout.three-col {
-        grid-template-columns: 1fr;
-    }
+/* Controls */
+.workbench-controls {
+    display: flex;
+    gap: 0.8rem;
+    justify-content: center;
+    margin-top: 0.5rem;
 }
 
-.check-btn {
-    margin-top: 0 !important;
-    /* Remove top margin to equal spacing */
+.control-btn {
+    background: transparent;
+    border: 1px solid var(--card-border);
+    color: var(--text-dim);
+    padding: 0.5rem 1rem;
+    font-family: 'Inter', sans-serif;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 4px;
+}
+
+.control-btn:hover:not(:disabled) {
+    border-color: #fff;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.control-btn.primary {
+    border-color: var(--accent-cyan);
+    color: var(--accent-cyan);
+    background: rgba(0, 243, 255, 0.05);
+    box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);
+}
+
+.control-btn.primary:hover:not(:disabled) {
+    background: var(--accent-cyan);
+    color: #000;
+}
+
+.control-btn:disabled {
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+/* Sequence Strip */
+.sequence-strip {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-top: 0.5rem;
+}
+
+.slot.active-process {
+    border-color: #fff;
+    box-shadow: 0 0 15px #fff;
+    transform: scale(1.05);
+}
+
+/* Log */
+.reaction-log {
+    width: 100%;
+    margin-top: 0.6rem;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--card-border);
+    border-radius: 4px;
+    padding: 0.6rem;
+    font-family: 'Courier New', monospace;
+    font-size: 0.7rem;
+    height: 270px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.reaction-log h3 {
+    margin: 0 0 0.5rem 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#log-content {
+    display: flex;
+    flex-direction: column-reverse;
+    overflow: hidden;
+    flex: 1;
+}
+
+.log-entry {
+    margin-bottom: 0.3rem;
+    opacity: 0.9;
+}
+
+.log-entry.step {
+    color: #fff;
+}
+
+.log-entry.process {
+    color: var(--accent-cyan);
+    margin-left: 0.5rem;
+}
+
+.log-entry.error {
+    color: var(--accent-red);
+    font-weight: bold;
+}
+
+.log-entry.success {
+    color: var(--accent-green);
+    font-weight: bold;
+}
+
+/* Protocol Note Styles (Isolating here to ensure match) */
+.protocol-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.protocol-list li {
+    position: relative;
+    padding-left: 1rem;
+    margin-bottom: 0.6rem;
+    color: #ccc;
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+.protocol-list li::before {
+    content: '>';
+    position: absolute;
+    left: 0;
+    color: var(--accent-cyan);
+    font-weight: bold;
+}
+
+/* Compact Overrides */
+.alchemy-grid.compact .alchemy-card {
+    padding: 0.5rem !important;
+    gap: 0.2rem;
 }
