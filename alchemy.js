@@ -43,7 +43,7 @@ const INGREDIENTS = [
     { id: 'zhguchelist', name: 'Жгучелист', type: TYPES.STABILIZER, secondary: 'Закрепляющий', desc: 'Хорошо фиксирует плотные структуры.', icon: ICONS.leaf },
     { id: 'egerlist', name: 'Егерлист', type: TYPES.BUFFER, secondary: 'Тяжёлый', desc: 'Утяжеляет смесь без смены фазы.', icon: ICONS.leaf },
     { id: 'glukomor', name: 'Глюкомор', type: TYPES.CATALYST, secondary: 'Резонансный', desc: 'Усиливает предыдущий реагент.', icon: ICONS.orb },
-    { id: 'erstnik', name: 'Ёрстник', type: TYPES.COAGULANT, secondary: 'Глубинный', desc: 'Формирует плотную структуру.', icon: ICONS.root },
+    { id: 'erstnik', name: 'Ёпрстник', type: TYPES.COAGULANT, secondary: 'Глубинный', desc: 'Формирует плотную структуру.', icon: ICONS.root },
     { id: 'durnoplyush', name: 'Дурноплющ', type: TYPES.MODIFIER, secondary: 'Пористый', desc: 'Делает структуру рыхлой.', icon: ICONS.skull },
     { id: 'pohernik', name: 'Похерник', type: TYPES.INHIBITOR, secondary: 'Инверсный', desc: 'Переворачивает направление текущего эффекта.', icon: ICONS.orb }
 ];

@@ -91,34 +91,147 @@ body {
     animation: fogPulse 10s ease-in-out infinite alternate;
 }
 
-/* Ghost Words */
-.ghost-words {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    /* Let clicks pass through generally */
-    z-index: 0;
-    /* Behind main content but above bg */
-    overflow: hidden;
-}
-
+/* Ghost Words Base */
 .ghost-word {
     position: absolute;
     font-family: var(--font-body);
     font-size: clamp(0.7rem, 2vw, 1.1rem);
     color: rgba(255, 255, 255, 0.12);
-    /* Static visibility */
+    /* Updated base opacity */
     text-transform: lowercase;
     pointer-events: auto;
     user-select: none;
-    /* No animation */
+    transform-origin: center;
+    will-change: transform, opacity;
 }
 
-/* Hover */
+/* Keyframes */
+@keyframes ghostBreath {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.15);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes ghostFloatUpDown {
+    0% {
+        transform: translateY(-8px);
+    }
+
+    50% {
+        transform: translateY(8px);
+    }
+
+    100% {
+        transform: translateY(-8px);
+    }
+}
+
+@keyframes ghostFloatDownUp {
+    0% {
+        transform: translateY(8px);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+
+    100% {
+        transform: translateY(8px);
+    }
+}
+
+@keyframes ghostOpacityPulse {
+    0% {
+        opacity: 0.12;
+    }
+
+    50% {
+        opacity: 0.35;
+    }
+
+    100% {
+        opacity: 0.12;
+    }
+}
+
+@keyframes ghostDriftLR {
+    0% {
+        transform: translateX(-10px);
+    }
+
+    50% {
+        transform: translateX(10px);
+    }
+
+    100% {
+        transform: translateX(-10px);
+    }
+}
+
+@keyframes ghostDriftRL {
+    0% {
+        transform: translateX(10px);
+    }
+
+    50% {
+        transform: translateX(-10px);
+    }
+
+    100% {
+        transform: translateX(10px);
+    }
+}
+
+/* Animation Groups */
+.group-1 {
+    animation: ghostBreath 6s ease-in-out infinite;
+    animation-delay: 0s;
+}
+
+.group-2 {
+    animation: ghostBreath 6s ease-in-out infinite;
+    animation-delay: 1s;
+}
+
+.group-3 {
+    animation: ghostFloatUpDown 7s ease-in-out infinite;
+}
+
+.group-4 {
+    animation: ghostFloatDownUp 7s ease-in-out infinite;
+}
+
+.group-5 {
+    animation: ghostOpacityPulse 5.5s ease-in-out infinite;
+}
+
+.group-6 {
+    animation: ghostOpacityPulse 5.5s ease-in-out infinite;
+    animation-delay: 1.2s;
+}
+
+.group-7 {
+    animation: ghostDriftLR 8s ease-in-out infinite;
+}
+
+.group-8 {
+    animation: ghostDriftRL 8s ease-in-out infinite;
+}
+
+/* Hover Effect - Highlight WITHOUT breaking animation */
 .ghost-word:hover {
+    opacity: 0.7;
+    text-shadow: 0 0 8px rgba(120, 255, 255, 0.45);
+    filter: brightness(1.4);
+    transition: opacity 0.2s ease, text-shadow 0.2s ease, filter 0.2s ease;
     cursor: default;
 }
 
@@ -134,14 +247,15 @@ body {
     text-shadow:
         0 0 10px var(--neon-acid),
         0 0 25px var(--neon-acid);
-    transform: scale(1.1);
     filter: brightness(1.3);
     opacity: 1 !important;
+    /* Animation continues */
 }
 
 @media (prefers-reduced-motion: reduce) {
     .ghost-word {
-        opacity: 0.12;
+        animation: none;
+        opacity: 0.15;
     }
 }
 
