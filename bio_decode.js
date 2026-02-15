@@ -83,8 +83,18 @@ document.addEventListener('DOMContentLoaded', () => {
             inputField.style.borderColor = 'var(--neon-acid)';
             inputField.style.color = 'var(--neon-acid)';
         } else {
-            alert('ОШИБКА ДЕКОДИРОВАНИЯ. НЕВЕРНЫЙ КОД.');
+            // Error handling - no alert, just visual feedback
+            const originalBorderColor = inputField.style.borderColor;
+            const originalColor = inputField.style.color;
+
             inputField.style.borderColor = 'var(--neon-red)';
+            inputField.style.color = 'var(--neon-red)';
+
+            // Revert after 2 seconds
+            setTimeout(() => {
+                inputField.style.borderColor = '';
+                inputField.style.color = '';
+            }, 2000);
 
             // Animation for error
             inputField.animate([

@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>БИО-ЛАБОРАТОРИЯ: ДЕКОДИРОВАНИЕ</title>
+    <title>БИО-ЛАБОРАТОРИЯ: ОБМАН</title>
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Syncopate:wght@400;700&display=swap"
         rel="stylesheet">
 
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="bio_decode.css">
+    <link rel="stylesheet" href="deception.css">
 </head>
 
 <body>
@@ -21,15 +21,15 @@
     <div class="quest-wrapper">
         <!-- New Header Structure -->
         <header class="quest-header">
-            <h1>БИО-ЛАБОРАТОРИЯ: СЕКЦИЯ ДЕКОДИРОВАНИЯ</h1>
-            <div class="status-indicator">СТАДИЯ: 04</div>
+            <h1>БИО-ЛАБОРАТОРИЯ: СЕКЦИЯ ОТРАЖЕНИЯ</h1>
+            <div class="status-indicator">СТАДИЯ: 05</div>
         </header>
 
         <div class="main-layout">
             <!-- Left Panel: Grid -->
             <div class="grid-panel">
                 <div class="plant-grid">
-                    <!-- Cards will be injected by bio_decode.js -->
+                    <!-- Cards will be injected by deception.js -->
                 </div>
             </div>
 
@@ -40,12 +40,15 @@
                 <div class="note-container">
                     <div class="note">
                         <div class="note-content">
-                            <div class="note-header">ПРОТОКОЛ ДЕКОДИРОВАНИЯ</div>
+                            <div class="note-header">ПРОТОКОЛ ОТРАЖЕНИЯ</div>
                             <ul class="protocol-list">
-                                <li><span class="highlight-text">Искажения</span> фиксируются.</li>
-                                <li>Параметр <span class="highlight-text">Δ</span> стабилен.</li>
-                                <li><span class="highlight-text">Свойство</span> указывает величину смещения.</li>
-                                <li><span class="highlight-text">Кто я?</span></li>
+                                <li>Поверхность вводит наблюдателя в <span class="highlight-text">заблуждение</span>.
+                                </li>
+                                <li>Истинные данные проявляются при <span class="highlight-text">отражении</span></li>
+                                <li>Импульс не описывает форму, он задаёт <span class="highlight-text">состояние</span>.
+                                </li>
+                                <li><span class="highlight-text">Символ</span> рождается из последовательности
+                                    состояний.</li>
                             </ul>
                         </div>
                     </div>
@@ -55,7 +58,7 @@
                 <div class="glass-panel input-block">
                     <h2>ВВОД ДАННЫХ</h2>
                     <form class="input-group" onsubmit="event.preventDefault();">
-                        <input type="text" placeholder="CODE" maxlength="7" pattern="[A-Za-z]{1,7}" required>
+                        <input type="text" placeholder="CODE" maxlength="15" pattern="[A-Za-z]{1,15}" required>
                         <button class="btn-check">ПРОВЕРИТЬ</button>
                     </form>
                 </div>
@@ -69,12 +72,11 @@
         <div class="success-content">
             <h2>ДЕКОДИРОВАНИЕ УСПЕШНО</h2>
             <p>ДОСТУП РАЗРЕШЕН</p>
-            <button onclick="window.location.href='deception.html'" class="return-btn">ПЕРЕЙТИ К СЛЕДУЮЩЕМУ
-                ЭТАПУ</button>
+            <button onclick="window.location.href='index.html'" class="return-btn">ПЕРЕЙТИ К СЛЕДУЮЩЕМУ ЭТАПУ</button>
         </div>
     </div>
 
-    <script src="bio_decode.js"></script>
+    <script src="deception.js"></script>
 </body>
 
 </html>

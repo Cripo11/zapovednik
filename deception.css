@@ -1,0 +1,568 @@
+/* deception.css - Specific styles for the Deception Page (Clone of bio_decode.css) */
+
+:root {
+    /* Colors match alchemy/selection */
+    --bg-deep: #05060a;
+    --neon-cyan: #00f3ff;
+    --neon-acid: #ccff00;
+    --neon-red: #ff3333;
+    --neon-violet: #bc13fe;
+
+    /* Glass Variables */
+    --glass-bg: rgba(20, 20, 25, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.08);
+
+    /* Text */
+    --text-main: #e0e0e0;
+    --text-dim: #888;
+
+    /* Fonts */
+    --font-head: 'Syncopate', sans-serif;
+    --font-body: 'Inter', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-deep);
+    color: var(--text-main);
+    font-family: var(--font-body);
+    height: 100vh;
+    margin: 0;
+    display: block;
+    overflow-y: hidden;
+}
+
+/* Ambient Effects */
+.bg-noise {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+.bg-fog {
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 50% 50%, rgba(204, 255, 0, 0.03), transparent 60%);
+    z-index: -2;
+    filter: blur(60px);
+    animation: fogPulse 10s ease-in-out infinite alternate;
+}
+
+@keyframes fogPulse {
+    0% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 0.6;
+        transform: scale(1.1);
+    }
+}
+
+/* Wrapper */
+.quest-wrapper {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 4rem 2rem 2rem;
+    gap: 2rem;
+}
+
+/* Header */
+.quest-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.5rem;
+    flex-shrink: 0;
+}
+
+.quest-header h1 {
+    font-family: var(--font-head);
+    font-size: 1.5rem;
+    color: var(--text-main);
+    letter-spacing: 0.1em;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    text-transform: uppercase;
+}
+
+.status-indicator {
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    color: var(--neon-cyan);
+    background: rgba(0, 243, 255, 0.1);
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    letter-spacing: 0.1em;
+    border: 1px solid rgba(0, 243, 255, 0.3);
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.1);
+    text-transform: uppercase;
+}
+
+/* Main Layout */
+.main-layout {
+    display: grid;
+    grid-template-columns: 1fr 450px;
+    gap: 1rem;
+    flex-grow: 1;
+    overflow: hidden;
+    height: 100%;
+}
+
+/* Left Panel - Grid */
+.grid-panel {
+    overflow-y: hidden;
+    padding-right: 0.5rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- UPDATED GRID FOR 10 CARDS (5x2) --- */
+.plant-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 1rem;
+    height: 100%;
+}
+
+/* --- FLIP CARD STYLES --- */
+
+.card-container {
+    perspective: 1000px;
+    cursor: pointer;
+    background: transparent;
+    border-radius: 8px;
+    height: 100%;
+    /* Fill the grid cell */
+}
+
+.card-flipper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+    transform-style: preserve-3d;
+}
+
+/* Flip State */
+.card-container.flipped .card-flipper {
+    transform: rotateY(180deg);
+}
+
+/* 3. Faces (Front and Back) */
+.card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(8px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+/* --- FRONT FACE (Icon + Name) --- */
+.card-front {
+    /* Uses .type-... color variables for glow */
+    --glow-color: var(--neon-acid);
+}
+
+.card-front.type-toxicity {
+    --glow-color: var(--neon-acid);
+}
+
+.card-front.type-concentration {
+    --glow-color: var(--neon-cyan);
+}
+
+.card-front.type-activity {
+    --glow-color: var(--neon-red);
+}
+
+.card-front.type-mutation {
+    --glow-color: var(--neon-violet);
+}
+
+.card-front .plant-icon {
+    width: 80px;
+    height: 80px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-front .plant-icon svg {
+    width: 48px;
+    height: 48px;
+    fill: var(--text-dim);
+}
+
+.card-front .plant-name {
+    font-size: 0.9rem;
+    /* Slightly smaller to fit 5 cols */
+}
+
+/* Hover Effect on Container - FRONT only */
+.card-container:hover .card-front {
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    background: rgba(30, 30, 35, 0.9);
+}
+
+/* --- BACK FACE (Text Info) --- */
+.card-back {
+    transform: rotateY(180deg);
+    padding: 1rem;
+    align-items: flex-start;
+    /* Left align text */
+    justify-content: flex-start;
+    background: rgba(15, 15, 20, 0.95);
+    /* Darker background for readability */
+    border-color: var(--neon-cyan);
+    box-shadow: inset 0 0 20px rgba(0, 243, 255, 0.05);
+}
+
+.card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    text-align: left;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.2rem;
+}
+
+.info-label {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+}
+
+.info-value {
+    font-size: 0.7rem;
+    color: var(--neon-cyan);
+    font-weight: 600;
+}
+
+.info-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.info-header {
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.info-text {
+    font-size: 0.75rem;
+    color: var(--text-main);
+    line-height: 1.4;
+}
+
+.pulse-text {
+    font-family: monospace;
+    color: var(--neon-acid);
+    letter-spacing: 0.1em;
+    font-size: 0.8rem;
+}
+
+/* Sidebar & Rest (Same as before) */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    height: 100%;
+}
+
+.note-container {
+    position: relative;
+    transform: rotate(2deg);
+    margin: 0.5rem 0 1rem 0;
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5));
+    max-width: 95%
+}
+
+.note {
+    background: #1a1b20;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.note::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.1'/%3E%3C/svg%3E");
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+.note-content {
+    font-family: var(--font-body);
+    color: #d0d0d0;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    position: relative;
+    z-index: 1;
+}
+
+.note-header {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #fff;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 0.8rem;
+    font-size: 0.95rem;
+}
+
+.protocol-list {
+    list-style: none;
+    padding: 0;
+}
+
+.protocol-list li {
+    margin-bottom: 0.6rem;
+    padding-left: 1rem;
+    position: relative;
+}
+
+.protocol-list li::before {
+    content: '>';
+    position: absolute;
+    left: 0;
+    color: var(--neon-cyan);
+    font-weight: bold;
+}
+
+.highlight-text {
+    color: #fff;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+    font-weight: 600;
+}
+
+.glass-panel {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: auto;
+}
+
+.glass-panel h2 {
+    font-family: var(--font-head);
+    font-size: 1rem;
+    color: var(--text-main);
+    letter-spacing: 0.1em;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.8rem;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+input[type="text"] {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: var(--neon-acid);
+    font-family: var(--font-head);
+    font-size: 1.2rem;
+    padding: 0.8rem;
+    text-align: center;
+    text-transform: uppercase;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    letter-spacing: 0.2em;
+}
+
+input[type="text"]:focus {
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 15px rgba(0, 243, 255, 0.15);
+}
+
+button.btn-check {
+    background: rgba(0, 243, 255, 0.1);
+    border: 1px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 1rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    transition: all 0.3s;
+    border-radius: 4px;
+}
+
+button.btn-check:hover {
+    background: var(--neon-cyan);
+    color: #000;
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.4);
+}
+
+/* Success Overlay */
+.success-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(20px);
+    transition: opacity 1s, visibility 1s;
+    opacity: 1;
+    visibility: visible;
+}
+
+.success-overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.success-content {
+    text-align: center;
+    animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.success-content h2 {
+    font-family: var(--font-head);
+    color: var(--neon-acid);
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 20px rgba(204, 255, 0, 0.3);
+    text-transform: uppercase;
+}
+
+.success-content p {
+    font-family: var(--font-body);
+    font-size: 1.2rem;
+    color: #fff;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
+.return-btn {
+    margin-top: 2rem;
+    background: transparent;
+    border: 1px solid #fff;
+    color: #fff;
+    padding: 1rem 3rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.return-btn:hover {
+    background: #fff;
+    color: #000;
+    border-color: #fff;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+    transform: translateY(-2px);
+}
+
+.plant-name {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-align: center;
+    color: #fff;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.6), 0 0 10px rgba(255, 255, 255, 0.4);
+    min-height: 1.2em;
+}
+
+@media (max-width: 900px) {
+    .main-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .plant-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto;
+    }
+}
