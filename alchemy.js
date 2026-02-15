@@ -20,8 +20,8 @@ const ICONS = {
     orb: '<circle cx="12" cy="12" r="10" />',
     seed: '<path d="M17.81 14.7l-4.75-4.75c1.47-2.73 1.05-6.17-1.28-8.5-2.03-2.03-5.2-2.36-7.53-.98 1.05 1.05 1.62 2.65.98 4.28 1.63-.64 3.23-.07 4.28.98 2.33 2.33 2.66 5.5.98 7.53l4.75 4.75c.39.39 1.02.39 1.41 0l1.17-1.17c.39-.39.39-1.03-.01-1.14z"/>',
     skull: '<path d="M12 2C7 2 3 6 3 11c0 2.5 1.1 4.5 3 6v3h12v-3c1.9-1.5 3-3.5 3-6 0-5-9-11-12-11zm0 2c3.9 0 7.2 2.5 8.7 6H3.3C4.8 6.5 8.1 4 12 4zm0 16c-1.1 0-2-.9-2-2h4c0 1.1-.9 2-2 2z"/>',
-    flower: '<path d="M12 2l2.4 7.2h7.6l-6 4.8 2.4 7.2-6-4.8-6 4.8 2.4-7.2-6-4.8-6 4.8 2.4-7.2-6-4.8h7.6z"/>',
-    leaf: '<path d="M17 8C8 10 5.9 16.17 3.82 21.34 9.17 22 14.17 21 17 8zm-8.5 7.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5.67 1.5-1.5 1.5.67 1.5-1.5 1.5z"/>',
+    flower: '<path d="M12 2l2.4 7.2h7.6l-6 4.8 2.4 7.2-6-4.8-6 4.8 2.4-7.2-6-4.8h7.6z"/>',
+    leaf: '<path d="M17 8C8 10 5.9 16.17 3.82 21.34 9.17 22 14.17 21 17 8zm-8.5 7.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5.67 1.5-1.5 1.5z"/>',
     dna: '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/>',
     flask: '<path d="M6 22h12a2 2 0 0 0 2-2V8l-6-6H6v20z"/>',
     clover: '<path d="M12 7c-2.76 0-5 2.24-5 5S9.24 17 12 17s5-2.24 5-5-2.24-5-5-5zm0-5C9.24 2 7 4.24 7 7s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm-5 5c0 2.76-2.24 5-5 5s5 2.24 5 5 2.24 5 5 5 2.24-5 5-5-2.24-5-5-5z"/>',
@@ -190,6 +190,7 @@ function renderIngredientGrid() {
         const card = document.createElement('div');
         // Use alchemy-card to isolate styles
         card.className = 'alchemy-card';
+        card.id = `card-${ing.id}`; // Unique ID for selection tracking
         // Add --type-color variable for CSS to use
         card.style = `--type-color: ${ing.type.color}`;
 
@@ -254,9 +255,19 @@ function renderProtocol() {
 function addToSequence(ing) {
     if (reaction.isRunning) return;
 
+    // Check for duplicates
+    if (sequence.some(item => item && item.id === ing.id)) {
+        return; // Already added
+    }
+
     const emptyIndex = sequence.indexOf(null);
     if (emptyIndex !== -1) {
         sequence[emptyIndex] = ing;
+
+        // Visual update
+        const cardEl = document.getElementById(`card-${ing.id}`);
+        if (cardEl) cardEl.classList.add('selected');
+
         renderSequenceStrip();
         updateControls();
     }
@@ -264,6 +275,14 @@ function addToSequence(ing) {
 
 function removeFromSequence(index) {
     if (reaction.isRunning) return;
+
+    const item = sequence[index];
+    if (item) {
+        // Visual update
+        const cardEl = document.getElementById(`card-${item.id}`);
+        if (cardEl) cardEl.classList.remove('selected');
+    }
+
     sequence[index] = null;
     renderSequenceStrip();
     updateControls();
@@ -271,6 +290,15 @@ function removeFromSequence(index) {
 
 function clearAll() {
     if (reaction.isRunning) return;
+
+    // Clear visuals
+    sequence.forEach(item => {
+        if (item) {
+            const cardEl = document.getElementById(`card-${item.id}`);
+            if (cardEl) cardEl.classList.remove('selected');
+        }
+    });
+
     sequence = [null, null, null, null, null];
     renderSequenceStrip();
     updateControls();
@@ -358,7 +386,13 @@ async function startReaction() {
         // Wait a moment so user sees the failure result
         await new Promise(r => setTimeout(r, 1000));
 
-        // Clear ingredients from the strip
+        // Clear ingredients from the strip and visuals
+        sequence.forEach(item => {
+            if (item) {
+                const cardEl = document.getElementById(`card-${item.id}`);
+                if (cardEl) cardEl.classList.remove('selected');
+            }
+        });
         sequence = [null, null, null, null, null];
         renderSequenceStrip();
     }

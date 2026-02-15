@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>БИО-ЛАБОРАТОРИЯ: ДЕКОДИРОВАНИЕ</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Syncopate:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="bio_decode.css">
+</head>
+
+<body>
+
+    <div class="bg-noise"></div>
+    <div class="bg-fog"></div>
+
+    <div class="quest-wrapper">
+        <!-- New Header Structure -->
+        <header class="quest-header">
+            <h1>БИО-ЛАБОРАТОРИЯ: СЕКЦИЯ ДЕКОДИРОВАНИЯ</h1>
+            <div class="status-indicator">СТАДИЯ: 04</div>
+        </header>
+
+        <div class="main-layout">
+            <!-- Left Panel: Grid -->
+            <div class="grid-panel">
+                <div class="plant-grid">
+                    <!-- Cards will be injected by bio_decode.js -->
+                </div>
+            </div>
+
+            <!-- Right Panel: Sidebar -->
+            <div class="sidebar">
+
+                <!-- Protocol Note Section -->
+                <div class="note-container">
+                    <div class="note">
+                        <div class="note-content">
+                            <div class="note-header">ПРОТОКОЛ ДЕКОДИРОВАНИЯ</div>
+                            <ul class="protocol-list">
+                                <li><span class="highlight-text">Искажения</span> фиксируются.</li>
+                                <li>Параметр <span class="highlight-text">Δ</span> стабилен.</li>
+                                <li><span class="highlight-text">Свойство</span> указывает величину смещения.</li>
+                                <li><span class="highlight-text">Кто я?</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input Block -->
+                <div class="glass-panel input-block">
+                    <h2>ВВОД ДАННЫХ</h2>
+                    <form class="input-group" onsubmit="event.preventDefault();">
+                        <input type="text" placeholder="CODE" maxlength="7" pattern="[A-Za-z]{1,7}" required>
+                        <button class="btn-check">ПРОВЕРИТЬ</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Success Overlay -->
+    <div id="success-overlay" class="success-overlay hidden">
+        <div class="success-content">
+            <h2>ДЕКОДИРОВАНИЕ УСПЕШНО</h2>
+            <p>ДОСТУП РАЗРЕШЕН</p>
+            <button onclick="window.location.href='index.html'" class="return-btn">ПЕРЕЙТИ К СЛЕДУЮЩЕМУ ЭТАПУ</button>
+        </div>
+    </div>
+
+    <script src="bio_decode.js"></script>
+</body>
+
+</html>
