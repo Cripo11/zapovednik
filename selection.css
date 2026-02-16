@@ -8,30 +8,42 @@
     --accent-red: #ff3333;
     --text-main: #e0e0e0;
     --text-dim: #888;
+
+    /* Fluid Sizing Variables */
+    --gap-fluid: clamp(12px, 1vw, 28px);
+    --pad-fluid: clamp(12px, 1.2vw, 32px);
+    --container-width: clamp(1100px, 95vw, 1800px);
+    --text-body: clamp(14px, 0.9vw, 16px);
+    --text-h1: clamp(22px, 1.6vw, 34px);
+    --slot-w: clamp(84px, 4.6vw, 120px);
+    --slot-h: clamp(100px, 5.5vw, 144px);
+    --icon-size: clamp(30px, 2.5vw, 50px);
 }
 
 body {
     overflow-y: auto;
-    /* Allow scrolling if needed */
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
     background-color: #05060a;
     display: block;
-    /* Override styles.css flex to fix scrolling issues */
+    font-size: var(--text-body);
 }
 
 .quest-wrapper {
     width: 100%;
+    max-width: var(--container-width);
+    margin: 0 auto;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    padding: 2rem;
+    padding: var(--pad-fluid);
     position: relative;
     z-index: 1;
     box-sizing: border-box;
-    /* Include padding in height */
+    gap: var(--gap-fluid);
 }
 
+/* Header */
 /* Header */
 .quest-header {
     display: flex;
@@ -40,11 +52,12 @@ body {
 
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding-bottom: 0.5rem;
+    margin-bottom: var(--gap-fluid);
 }
 
 .quest-header h1 {
     font-family: 'Syncopate', sans-serif;
-    font-size: 1.5rem;
+    font-size: var(--text-h1);
     color: var(--text-main);
     letter-spacing: 0.1em;
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
@@ -63,13 +76,14 @@ body {
 }
 
 /* Layout */
+/* Layout */
 .quest-layout {
     display: grid;
     grid-template-columns: 1fr 1.2fr 0.8fr;
-    gap: 2rem;
+    gap: var(--gap-fluid);
     flex: 1;
     min-height: 0;
-    /* Fix grid overflow */
+    max-height: 768px;
 }
 
 .section-title {
@@ -93,9 +107,10 @@ body {
 .plant-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(4, 1fr);
+    /* grid-template-rows: repeat(4, 1fr); Removed to allow auto-flow if needed, or keep if strict 4x4 */
     gap: 0.8rem;
     flex: 1;
+    align-content: start;
 }
 
 /* Plant Icons */
@@ -108,12 +123,14 @@ body {
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 0.8rem;
+    padding: clamp(0.5rem, 1vw, 1rem);
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     position: relative;
     backdrop-filter: blur(5px);
     gap: 0.5rem;
+    aspect-ratio: 1/1;
+    /* Ensure square aspect ratio */
 }
 
 .plant-card span {
@@ -139,8 +156,8 @@ body {
 }
 
 .card-icon {
-    width: 40px;
-    height: 40px;
+    width: var(--icon-size);
+    height: var(--icon-size);
     fill: var(--text-dim);
     transition: all 0.3s;
 }
@@ -161,19 +178,26 @@ body {
     align-items: center;
     justify-content: center;
     gap: 3rem;
+    /* Keep 3rem here or fluid? Let's make it fluid but larger */
+    gap: clamp(2rem, 4vw, 4rem);
     margin-top: 2rem;
 }
 
 .workbench {
     width: 100%;
+    /* Refined clamping for workbench width to scale better from 1280px to 2560px */
+    max-width: clamp(380px, 35vw, 650px);
     background: rgba(0, 0, 0, 0.4);
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 12px;
-    padding: 2rem;
+    padding: var(--pad-fluid);
     display: flex;
     flex-direction: column;
     align-items: center;
     box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8);
+    /* Prevent it from getting too tall on small screens */
+    max-height: clamp(500px, 80vh, 100%);
+    overflow-y: auto;
 }
 
 .slots-container {
@@ -185,8 +209,8 @@ body {
 }
 
 .slot {
-    width: 100px;
-    height: 120px;
+    width: var(--slot-w);
+    height: var(--slot-h);
     background: var(--slot-bg);
     border: 1px dashed var(--slot-empty);
     border-radius: 8px;
@@ -318,16 +342,17 @@ body {
     justify-content: center;
     align-items: center;
     height: 100%;
+    max-height: 768px;
 }
 
 .note {
     background: #1a1b20;
     border: 1px solid rgba(255, 255, 255, 0.08);
     /* Dark paper style */
-    padding: 2rem;
+    padding: var(--pad-fluid);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     transform: rotate(2deg);
-    max-width: 300px;
+    max-width: clamp(280px, 25vw, 400px);
     position: relative;
 }
 

@@ -19,6 +19,14 @@
     /* Fonts */
     --font-head: 'Syncopate', sans-serif;
     --font-body: 'Inter', sans-serif;
+
+    /* Fluid Sizing Variables */
+    --gap-fluid: clamp(12px, 1vw, 28px);
+    --pad-fluid: clamp(12px, 1.2vw, 32px);
+    --container-width: clamp(1100px, 95vw, 1800px);
+    --text-body: clamp(14px, 0.9vw, 16px);
+    --sidebar-width: clamp(300px, 30vw, 450px);
+    --card-pad-deception: clamp(0.6rem, 0.9vw, 1rem);
 }
 
 * {
@@ -31,10 +39,12 @@ body {
     background-color: var(--bg-deep);
     color: var(--text-main);
     font-family: var(--font-body);
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
     display: block;
-    overflow-y: hidden;
+    overflow-y: auto;
+    /* Enable vertical scrolling */
+    font-size: var(--text-body);
 }
 
 /* Ambient Effects */
@@ -77,11 +87,14 @@ body {
 /* Wrapper */
 .quest-wrapper {
     width: 100%;
-    height: 100vh;
+    max-width: var(--container-width);
+    margin: 0 auto;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    padding: 2rem 4rem 2rem 2rem;
-    gap: 2rem;
+    padding: var(--pad-fluid);
+    box-sizing: border-box;
+    gap: var(--gap-fluid);
 }
 
 /* Header */
@@ -92,6 +105,7 @@ body {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding-bottom: 0.5rem;
     flex-shrink: 0;
+    margin-bottom: 1rem;
 }
 
 .quest-header h1 {
@@ -119,29 +133,54 @@ body {
 /* Main Layout */
 .main-layout {
     display: grid;
-    grid-template-columns: 1fr 450px;
-    gap: 1rem;
+    grid-template-columns: 1fr var(--sidebar-width);
+    gap: var(--gap-fluid);
     flex-grow: 1;
-    overflow: hidden;
-    height: 100%;
+    overflow: visible;
+    height: auto;
+    align-items: start;
 }
 
 /* Left Panel - Grid */
 .grid-panel {
-    overflow-y: hidden;
+    overflow: visible;
     padding-right: 0.5rem;
-    height: 100%;
+    height: auto;
+    /* Allow height to grow */
     display: flex;
     flex-direction: column;
 }
 
-/* --- UPDATED GRID FOR 10 CARDS (5x2) --- */
+/* --- DYNAMIC GRID (Scrollable) --- */
 .plant-grid {
     display: grid;
+    /* Default: 5 columns for large screens */
     grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(3, 1fr);
+    grid-auto-rows: 240px;
+    /* Fixed height for rows */
     gap: 1rem;
-    height: 100%;
+    width: 100%;
+}
+
+/* Laptop and smaller: 4 columns */
+@media (max-width: 1600px) {
+    .plant-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Tablet: 3 columns */
+@media (max-width: 1200px) {
+    .plant-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Mobile: 2 columns */
+@media (max-width: 768px) {
+    .plant-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 /* --- FLIP CARD STYLES --- */
@@ -185,7 +224,8 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
+    gap: 0.5rem;
+    padding: var(--card-pad-deception);
 }
 
 /* --- FRONT FACE (Icon + Name) --- */
@@ -211,8 +251,8 @@ body {
 }
 
 .card-front .plant-icon {
-    width: 80px;
-    height: 80px;
+    width: clamp(50px, 5vw, 80px);
+    height: clamp(50px, 5vw, 80px);
     border: 2px solid rgba(255, 255, 255, 0.1);
     background: rgba(0, 0, 0, 0.3);
     border-radius: 50%;
@@ -222,13 +262,13 @@ body {
 }
 
 .card-front .plant-icon svg {
-    width: 48px;
-    height: 48px;
+    width: clamp(28px, 3vw, 48px);
+    height: clamp(28px, 3vw, 48px);
     fill: var(--text-dim);
 }
 
 .card-front .plant-name {
-    font-size: 0.9rem;
+    font-size: clamp(0.7rem, 0.8vw, 1rem);
     /* Slightly smaller to fit 5 cols */
 }
 
@@ -311,8 +351,9 @@ body {
 .sidebar {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: var(--gap-fluid);
     height: 100%;
+    max-height: 753px;
 }
 
 .note-container {
@@ -326,7 +367,7 @@ body {
 .note {
     background: #1a1b20;
     border: 1px solid rgba(255, 255, 255, 0.08);
-    padding: 1.5rem;
+    padding: var(--pad-fluid);
     position: relative;
     overflow: hidden;
 }
@@ -392,7 +433,7 @@ body {
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
     border-radius: 8px;
-    padding: 1.5rem;
+    padding: var(--pad-fluid);
     backdrop-filter: blur(10px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     display: flex;

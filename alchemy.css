@@ -1,34 +1,54 @@
 /* Inherit core layout/components from Selection/Mutation */
 /* This file ONLY adds specific Alchemy Puzzle components */
 
+:root {
+    /* Fluid Sizing Variables (Matching selection.css/mutation.css) */
+    --gap-fluid: clamp(12px, 1vw, 28px);
+    --pad-fluid: clamp(12px, 1.2vw, 32px);
+    --container-width: clamp(1100px, 95vw, 1800px);
+    --text-body: clamp(14px, 0.9vw, 16px);
+    --text-h1: clamp(22px, 1.6vw, 34px);
+    --icon-size-compact: clamp(24px, 2vw, 40px);
+    --cauldron-visual-size: clamp(120px, 10vw, 180px);
+    /* Alchemy specific card padding */
+    --card-pad-alchemy: clamp(0.5rem, 0.8vw, 1rem);
+}
+
 /* =========================================
    Layout Extensions
    ========================================= */
 
+.quest-wrapper {
+    width: 100%;
+    max-width: var(--container-width);
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: var(--pad-fluid);
+    box-sizing: border-box;
+    gap: var(--gap-fluid);
+}
+
 .quest-layout.three-col {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2%;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 0.8fr;
+    gap: var(--gap-fluid);
     align-items: start;
+    width: 100%;
 }
 
 .workbench-section {
-    gap: 2rem;
+    gap: var(--gap-fluid);
+    display: flex;
+    flex-direction: column;
 }
 
 body {
-    overflow-y: auto;
-    /* Scroll ONLY if needed */
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
     display: block;
-    /* Override styles.css flex to fix scrolling */
-}
-
-.quest-wrapper {
-    min-height: 100vh;
-    padding-bottom: 2rem;
-    box-sizing: border-box;
-    /* Key fix: Include padding in 100vh height */
+    font-size: var(--text-body);
 }
 
 /* =========================================
@@ -39,34 +59,28 @@ body {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 0.8rem;
-    /* Matched selection.css */
     width: 100%;
 }
 
 .alchemy-card {
     background: var(--card-bg);
-    /* Use variable from selection.css */
     border: 1px solid var(--card-border);
     border-radius: 6px;
-    /* Matched */
     display: flex;
     flex-direction: column;
     justify-content: center;
-    /* Centered content */
     align-items: center;
     text-align: center;
-    padding: 0.8rem;
-    /* Matched */
+    padding: var(--card-pad-alchemy);
     gap: 0.5rem;
-    /* Matched */
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     position: relative;
     backdrop-filter: blur(5px);
-    height: 140px;
+    height: clamp(120px, 10vw, 160px);
+    /* Fluid height */
     box-sizing: border-box;
     overflow: visible;
-    /* Allowing tooltips */
 }
 
 /* Hover Effect - Exact Match */
@@ -94,11 +108,9 @@ body {
 }
 
 .card-icon {
-    width: 40px;
-    /* Matched selection.css */
-    height: 40px;
+    width: var(--icon-size-compact);
+    height: var(--icon-size-compact);
     fill: var(--text-dim);
-    /* Default Gray */
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
@@ -113,8 +125,7 @@ body {
 }
 
 .card-name {
-    font-size: 0.75rem;
-    /* Matched selection.css span */
+    font-size: clamp(0.65rem, 0.6vw, 0.75rem);
     color: var(--text-main);
     letter-spacing: 0.05em;
     text-transform: uppercase;
@@ -152,7 +163,6 @@ body {
 .card-secondary {
     font-size: 0.55rem;
     color: #888;
-    /* Dim text */
     text-transform: uppercase;
 }
 
@@ -185,7 +195,6 @@ body {
     opacity: 0;
     position: absolute;
     bottom: 140%;
-    /* Moved up slightly */
     left: 50%;
     transform: translateX(-50%);
     width: 180px;
@@ -213,8 +222,8 @@ body {
    ========================================= */
 
 .cauldron-visual {
-    width: 120px;
-    height: 120px;
+    width: var(--cauldron-visual-size);
+    height: var(--cauldron-visual-size);
     position: relative;
     margin: 0.6rem;
     border-radius: 50%;

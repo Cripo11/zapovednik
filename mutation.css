@@ -1,21 +1,56 @@
 /* Inherit most validation/grid styles from selection.css or redefine here */
+:root {
+    /* Fluid Sizing Variables (Matching selection.css) */
+    --gap-fluid: clamp(12px, 1vw, 28px);
+    --pad-fluid: clamp(12px, 1.2vw, 32px);
+    --container-width: clamp(1100px, 95vw, 1800px);
+    --text-body: clamp(14px, 0.9vw, 16px);
+    --text-h1: clamp(22px, 1.6vw, 34px);
+    --slot-w: clamp(84px, 4.6vw, 120px);
+    --slot-h: clamp(100px, 5.5vw, 144px);
+    --icon-size-compact: clamp(24px, 2vw, 40px);
+    --cauldron-size: clamp(140px, 12vw, 220px);
+}
 
 /* =========================================
    Layout & Grid Adjustments (from alchemy.css)
    ========================================= */
 
+.quest-wrapper {
+    width: 100%;
+    max-width: var(--container-width);
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: var(--pad-fluid);
+    box-sizing: border-box;
+    gap: var(--gap-fluid);
+}
+
 .quest-layout.three-col {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2.5%;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 0.8fr;
+    gap: var(--gap-fluid);
     align-items: start;
+    width: 100%;
 }
 
 .workbench {
-    padding: 0.5rem;
+    padding: var(--pad-fluid);
+    width: 100%;
+    box-sizing: border-box;
+    /* Refined clamping for workbench width (Match Selection) */
+    max-width: clamp(380px, 35vw, 650px);
+    /* Prevent it from getting too tall on small screens */
+    max-height: clamp(500px, 80vh, 100%);
+    overflow-y: auto;
+    margin: 0 auto;
+    /* Ensure centering */
 }
 
 .note {
-    padding: 1rem;
+    padding: var(--pad-fluid);
 }
 
 /* Compact Plant Grid */
@@ -27,7 +62,7 @@
 }
 
 .plant-card {
-    padding: 1.3rem 0.4rem 0.4rem;
+    padding: clamp(0.8rem, 1vw, 1.3rem) 0.4rem 0.4rem;
     gap: 0.1rem;
     height: 100%;
     width: 100%;
@@ -41,7 +76,7 @@
 .plant-card h4,
 .plant-card span {
     margin: 0;
-    font-size: 12px;
+    font-size: clamp(10px, 0.8vw, 12px);
     color: #eee;
     white-space: nowrap;
     overflow: hidden;
@@ -50,7 +85,7 @@
 }
 
 .plant-card .stats {
-    font-size: 10px;
+    font-size: clamp(8px, 0.7vw, 10px);
     color: var(--text-dim);
     line-height: 1.2;
     margin-top: 3px;
@@ -58,8 +93,8 @@
 }
 
 .card-icon {
-    width: 36px;
-    height: 36px;
+    width: var(--icon-size-compact);
+    height: var(--icon-size-compact);
 }
 
 /* =========================================
@@ -68,17 +103,17 @@
 
 .cauldron-container {
     position: relative;
-    width: 180px;
-    height: 180px;
+    width: var(--cauldron-size);
+    height: var(--cauldron-size);
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: var(--gap-fluid);
 }
 
 .cauldron-svg {
-    width: 180px;
-    height: 180px;
+    width: 100%;
+    height: 100%;
     filter: drop-shadow(0 0 10px rgba(0, 243, 255, 0.2));
 }
 
@@ -94,7 +129,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     font-family: 'Syncopate', sans-serif;
-    font-size: 1.2rem;
+    font-size: clamp(0.8rem, 1vw, 1.2rem);
     color: #fff;
     text-shadow: 0 0 10px var(--accent-cyan);
 }
@@ -122,8 +157,8 @@
 }
 
 .indicator-badge {
-    width: 28px;
-    height: 28px;
+    width: clamp(24px, 2vw, 32px);
+    height: clamp(24px, 2vw, 32px);
     border-radius: 50%;
     border: 1px solid rgba(255, 255, 255, 0.3);
     display: flex;
@@ -227,8 +262,8 @@
 }
 
 .gene-dot {
-    width: 24px;
-    height: 24px;
+    width: clamp(20px, 1.5vw, 24px);
+    height: clamp(20px, 1.5vw, 24px);
     border-radius: 50%;
     display: flex;
     justify-content: center;
