@@ -90,11 +90,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        const submitNickname = () => {
+        const submitNickname = async () => {
             const nickname = nicknameInput.value.trim();
             if (nickname) {
                 localStorage.setItem('userNickname', nickname);
-                sendProgress('Login');
+                await sendProgress('Login');
                 window.location.href = 'selection.html';
             } else {
                 nicknameInput.style.borderColor = 'var(--neon-red)';

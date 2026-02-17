@@ -2,10 +2,6 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzkbzZMR3xH8OCszeof8
 const SECRET = "d7Kq_91XvPzL_4RtY8mN";
 const QUEUE_KEY = "zapovednik_progress_queue";
 
-/**
- * Sends progress to the server. If offline or failed, queues it for later.
- * @param {string} level - Level identifier (e.g., '1_Selection')
- */
 async function sendProgress(level) {
     const nickname = localStorage.getItem("userNickname");
     if (!nickname) {
@@ -19,19 +15,14 @@ async function sendProgress(level) {
         level: String(level)
     };
 
-    // Add to queue immediately to ensure persistence
     addToQueue(payload);
 
-    // Try to flush queue
     await flushQueue();
 }
 
-/**
- * Adds an item to the local storage queue.
- */
+
 function addToQueue(payload) {
     let queue = getQueue();
-    // Avoid duplicates if possible (simple check)
     const isDuplicate = queue.some(item =>
         item.nickname === payload.nickname &&
         item.level === payload.level
@@ -43,22 +34,32 @@ function addToQueue(payload) {
     }
 }
 
-/**
- * Tries to send all queued items.
- */
+
+let isSending = false;
+
 async function flushQueue() {
+    if (isSending) return;
+    isSending = true;
+
     let queue = getQueue();
-    if (queue.length === 0) return;
+    if (queue.length === 0) {
+        isSending = false;
+        return;
+    }
 
     console.log(`Flushing progress queue (${queue.length} items)...`);
 
-    const remainingQueue = [];
+    // Clear queue immediately to prevent duplicates if function runs again
+    saveQueue([]);
+
+    const failedItems = [];
 
     for (const item of queue) {
         try {
             const body = new URLSearchParams(item);
             const res = await fetch(SCRIPT_URL, {
                 method: "POST",
+                keepalive: true,
                 body: body
             });
 
@@ -66,15 +67,21 @@ async function flushQueue() {
                 console.log(`Progress sent for ${item.level}: Success`);
             } else {
                 console.error(`Progress sent for ${item.level}: Failed with status ${res.status}`);
-                remainingQueue.push(item); // Keep in queue
+                failedItems.push(item);
             }
         } catch (err) {
             console.error(`Progress sent for ${item.level}: Network Error`, err);
-            remainingQueue.push(item); // Keep in queue
+            failedItems.push(item);
         }
     }
 
-    saveQueue(remainingQueue);
+    if (failedItems.length > 0) {
+        // Merge with any new items that were added while we were flushing
+        const currentQueue = getQueue();
+        saveQueue([...failedItems, ...currentQueue]);
+    }
+
+    isSending = false;
 }
 
 function getQueue() {

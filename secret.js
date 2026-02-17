@@ -4,33 +4,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const secretInput = document.getElementById('secret-input');
     const confirmBtn = document.getElementById('secret-confirm-btn');
 
-    // Toggle Visibility
     deltaTrigger.addEventListener('click', () => {
         vigenereContainer.classList.toggle('hidden');
-        // Optional: Scroll to it if needed, or just focus
         if (!vigenereContainer.classList.contains('hidden')) {
             setTimeout(() => secretInput.focus(), 100);
         }
     });
 
-    // Input Validation (Latin only)
     secretInput.addEventListener('input', (e) => {
         let val = e.target.value;
-        // Keep only Latin letters
         val = val.replace(/[^A-Za-z]/g, '');
         e.target.value = val;
     });
 
-    // Confirm Button Logic with Error Animation
     confirmBtn.addEventListener('click', () => {
         const val = secretInput.value.toUpperCase();
 
         if (val !== 'STRADANIE') {
-            // 1. Change color to Red
             secretInput.style.borderColor = 'var(--neon-red)';
             secretInput.style.color = 'var(--neon-red)';
 
-            // 2. Shake Animation
             secretInput.animate([
                 { transform: 'translateX(0)' },
                 { transform: 'translateX(-5px)' },
@@ -41,13 +34,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 iterations: 1
             });
 
-            // 3. Revert after 1 second
             setTimeout(() => {
                 secretInput.style.borderColor = '';
                 secretInput.style.color = '';
             }, 1000);
         } else {
-            // Success Logic - Replace input block with success message
             sendProgress('6_Secret');
             const inputBlock = document.querySelector('.input-block-secret');
             inputBlock.innerHTML = `
