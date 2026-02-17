@@ -49,7 +49,6 @@ async function flushQueue() {
 
     console.log(`Flushing progress queue (${queue.length} items)...`);
 
-    // Clear queue immediately to prevent duplicates if function runs again
     saveQueue([]);
 
     const failedItems = [];
@@ -75,7 +74,6 @@ async function flushQueue() {
     }
 
     if (failedItems.length > 0) {
-        // Merge with any new items that were added while we were flushing
         const currentQueue = getQueue();
         saveQueue([...failedItems, ...currentQueue]);
     }

@@ -143,8 +143,6 @@ function handleSuccess() {
     const overlay = document.getElementById('success-overlay');
     overlay.classList.remove('hidden');
 
-    overlay.querySelector('.key-display').innerHTML = 'КЛЮЧ: <span class="key-code">ROOT-02-ALPHA</span>';
-
     localStorage.setItem('zapovednik_stage1_done', 'true');
     localStorage.setItem('zapovednik_stage1_key', 'ROOT-02-ALPHA');
     sendProgress('1_Selection');
