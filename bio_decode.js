@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const answer = inputField.value;
         if (answer === 'MRRICCO') {
             document.getElementById('success-overlay').classList.remove('hidden');
-            sendProgress('5_BioDecode');
+            sendProgress('4_BioDecode');
             inputField.style.borderColor = 'var(--neon-acid)';
             inputField.style.color = 'var(--neon-acid)';
         } else {

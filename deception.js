@@ -216,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const answer = inputField.value;
         if (answer === 'ZAPOVEDNIK') {
             document.getElementById('success-overlay').classList.remove('hidden');
-            sendProgress('4_Deception');
+            sendProgress('5_Deception');
             inputField.style.borderColor = 'var(--neon-acid)';
             inputField.style.color = 'var(--neon-acid)';
         } else {
