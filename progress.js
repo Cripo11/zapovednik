@@ -1,4 +1,4 @@
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyWCdXytKmW4an2vCn44aepASdjn2XbIO17mJIXUx4e5mgrmQdz-zNmHhRmYHVj_l3A/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzkbzZMR3xH8OCszeof84QAkmEvlODhjYJh5-9spVcTn0gbZyy3BN_X2fGFlLk466l5/exec";
 const SECRET = "d7Kq_91XvPzL_4RtY8mN";
 const QUEUE_KEY = "zapovednik_progress_queue";
 
@@ -91,8 +91,6 @@ function saveQueue(queue) {
     localStorage.setItem(QUEUE_KEY, JSON.stringify(queue));
 }
 
-// Try to flush queue on load (in case previous attempt failed)
 document.addEventListener('DOMContentLoaded', () => {
-    // Small delay to ensure network is ready
     setTimeout(flushQueue, 2000);
 });

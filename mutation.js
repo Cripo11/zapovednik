@@ -205,18 +205,16 @@ function fail(msg) {
 
 function success() {
     document.body.style.transition = 'background 1s';
-    // Deep green organic bg
     document.body.style.background = 'radial-gradient(circle at 50% 50%, #001a00 0%, #000000 100%)';
 
     const overlay = document.getElementById('success-overlay');
-    overlay.classList.remove('hidden'); // Or build custom overlay logic
+    overlay.classList.remove('hidden');
 
     statusText.innerText = "СТАБИЛЕН";
     statusText.style.color = "#00ff00";
 
     showMessage("ПРОФИЛЬ СТАБИЛЕН", "success");
 
-    // Save progress
     localStorage.setItem('zapovednik_stage2_done', 'true');
     localStorage.setItem('zapovednik_stage2_key', 'ROOT-03-BETA');
     sendProgress('2_Mutation');
