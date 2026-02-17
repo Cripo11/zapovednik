@@ -70,6 +70,49 @@ document.addEventListener('DOMContentLoaded', () => {
     updateTimer();
     setInterval(updateTimer, UPDATE_INTERVAL);
 
+    // Nickname Modal Logic
+    const selectionLink = document.getElementById('selection-link');
+    const modal = document.getElementById('nickname-modal');
+    const nicknameInput = document.getElementById('nickname-input');
+    const nicknameSubmit = document.getElementById('nickname-submit');
+
+    if (selectionLink && modal && nicknameInput && nicknameSubmit) {
+        selectionLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            modal.classList.remove('hidden');
+            nicknameInput.focus();
+        });
+
+        // Close modal on outside click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.add('hidden');
+            }
+        });
+
+        const submitNickname = () => {
+            const nickname = nicknameInput.value.trim();
+            if (nickname) {
+                localStorage.setItem('userNickname', nickname);
+                sendProgress('Login');
+                window.location.href = 'selection.html';
+            } else {
+                nicknameInput.style.borderColor = 'var(--neon-red)';
+                setTimeout(() => {
+                    nicknameInput.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                }, 1000);
+            }
+        };
+
+        nicknameSubmit.addEventListener('click', submitNickname);
+
+        nicknameInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                submitNickname();
+            }
+        });
+    }
+
     console.log(
         "%c ЗАПОВЕДНИК %c SYSTEM READY ",
         "background: #ff3333; color: #000; font-weight: bold; padding: 4px;",

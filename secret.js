@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 1000);
         } else {
             // Success Logic - Replace input block with success message
+            sendProgress('6_Secret');
             const inputBlock = document.querySelector('.input-block-secret');
             inputBlock.innerHTML = `
                 <div style="text-align: center; color: var(--neon-green); animation: fadeIn 0.5s;">

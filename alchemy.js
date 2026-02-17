@@ -382,6 +382,7 @@ async function startReaction() {
     if (reaction.flags.sealed === true && reaction.phase !== PHASES.MURKY) {
         log("✔ УСПЕХ: получен СТАБИЛЬНЫЙ ЭКСТРАКТ.", "success");
         successOverlay.classList.remove('hidden');
+        sendProgress('3_Alchemy');
     } else {
         // Wait a moment so user sees the failure result
         await new Promise(r => setTimeout(r, 1000));

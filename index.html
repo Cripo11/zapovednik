@@ -20,7 +20,8 @@
         <span class="ghost-word group-3" style="top: 15%; left: 10%;">костная_пыль</span>
         <span class="ghost-word group-5" style="top: 25%; right: 15%;">страдания</span>
         <!-- Secret Link to Selection Quest -->
-        <a href="selection.html" class="ghost-word secret-link group-1" style="top: 60%; left: 20%;">грядка</a>
+        <a href="selection.html" id="selection-link" class="ghost-word secret-link group-1"
+            style="top: 60%; left: 20%;">грядка</a>
         <span class="ghost-word group-7" style="top: 80%; right: 10%;">жопоцвет</span>
         <span class="ghost-word group-4" style="top: 40%; left: 5%;">алхимическая_бурда</span>
         <span class="ghost-word group-2" style="top: 10%; right: 20%;">чепушник</span>
@@ -101,7 +102,19 @@
             </a>
         </footer>
     </div>
+
+    <!-- Nickname Modal -->
+    <div id="nickname-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h3 class="modal-title">ИДЕНТИФИКАЦИЯ</h3>
+            <p class="modal-desc">Введите ваш ник для доступа к системе</p>
+            <input type="text" id="nickname-input" class="modal-input" placeholder="..." maxlength="20"
+                autocomplete="off">
+            <button id="nickname-submit" class="modal-btn">ПОДТВЕРДИТЬ</button>
+        </div>
+    </div>
     <div id="custom-tooltip" class="tooltip hidden"></div>
+    <script src="progress.js"></script>
     <script src="app.js"></script>
 </body>
 

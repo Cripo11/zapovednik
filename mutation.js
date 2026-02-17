@@ -219,6 +219,7 @@ function success() {
     // Save progress
     localStorage.setItem('zapovednik_stage2_done', 'true');
     localStorage.setItem('zapovednik_stage2_key', 'ROOT-03-BETA');
+    sendProgress('2_Mutation');
 }
 
 function showMessage(text, type) {

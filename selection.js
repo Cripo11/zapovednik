@@ -167,6 +167,7 @@ function handleSuccess() {
     // Save state
     localStorage.setItem('zapovednik_stage1_done', 'true');
     localStorage.setItem('zapovednik_stage1_key', 'ROOT-02-ALPHA');
+    sendProgress('1_Selection');
 
     // Confetti or sound? kept minimal.
 }
