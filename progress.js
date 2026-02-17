@@ -59,7 +59,6 @@ async function flushQueue() {
             const body = new URLSearchParams(item);
             const res = await fetch(SCRIPT_URL, {
                 method: "POST",
-                keepalive: true,
                 body: body
             });
 
